@@ -18,6 +18,7 @@ Tiivistelmät artikkeleista, jotka listataan Palvelinten hallinta kurssin kotite
 
 ### Salt Overview - YAML
 
+- Salt käyttää tiedostoissaan YAML merkintäkieltä.
 - 
 
 
