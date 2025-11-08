@@ -57,7 +57,7 @@ OS: Debian 13 Trixie
 CPU: 2 ydintä  
 RAM: 4 GB
 
-### a) Vagrant asennus
+### a) Hello Vagrant!
 
 Seurasin asennuksessa github käyttäjän "kvietmeier" kirjoittamaa ohjetta Windows 11 asennukseen (kvietmeier 2024).  
 Minulla on VirtualBox jo asennettuna, joten siirryin suoraan Vagrantin asennukseen. Aloitin lataamalla Vagrantin Windowsille Vagrantin verkkosivuilta https://developer.hashicorp.com/vagrant/install .
@@ -79,6 +79,40 @@ Ajoin PowerShellissä sen jälkeen komennon "vagrant --version" testatakseni Vag
 
 Vagrant asentui onnistuneesti.
 
-### b) Virtuaalikoneiden luominen Vagrantilla
+### b) Linux Vagrant
 
-Seuraavaksi loin Vagrantfile:n artikkelin "Two Machine Virtual Network With Debian 11 Bullseye and Vagrant" mukaan.
+Loin uuden Linux virtuaalikoneen Vagrantilla, seuraamalla Vagrantin tutoriaalia (Vagrant s.a.).
+Avasin PowerShellin ja suoritin komennon:
+
+```
+vagrant init hashicorp-education/ubuntu-24-04 --box-version 0.1.0
+```
+
+Tämä hakee "box"in HCP rekisteristä ja luo automaattisesti Vagrantfilen hakemistoon.
+Kun ajoin komennon "vagrant up", vagrant luki vagrantfilen ja suoritti konfiguraation ja latasi boxin. Vagrant hyödyntää tätä boxia pohjana luodessaan uusia virtuaalikoneita,
+luomalla siitä kopion. Näin vältytään lataamasta boxia uudelleen joka kerta kun uusi kone luodaan ja vältytään muutoksilta alkuperäiseen boxiin, kun virtuaalikoneita ajetaan ja konfiguroidaan.  
+Kun Vagrant oli saanut operaation suoritettua, yhdistin virtuaalikoneeseen komennolla "vagrant ssh".
+
+<img width="399" height="28" alt="image" src="https://github.com/user-attachments/assets/e1cbd405-cd56-4d28-8937-f75c8540d7bc" />
+
+Ajoin virtuaalikoneella ohjeen komennon "lsb_release -a", varmistaakseni sen asentuneen oikein:
+
+<img width="495" height="161" alt="image" src="https://github.com/user-attachments/assets/9b0c4a1e-21bf-4d2a-8dd3-7dac1607befb" />
+
+Virtuaalikone asentui oikein.
+
+### c) Kaksin kaunihimpi
+
+Tässä tehtävässä seurasin artikkelia "Two Machine Virtual Network With Debian 11 Bullseye and Vagrant" (Karvinen 2021).  
+Kirjauduin ensin ulos virtuaalikoneelta komennolla "logout" ja ajoin komennon "vagrant destroy" tuhotakseni koneen.
+Tämän jälkeen poistin myös Vagrantfilen hakemistosta "hallinta" ja loin uuden Vagrantfilen.
+Kopioin artikkelin Vagrantfilen sisällön, mutta muokkasin koneiden nimet (m001, m002) ja Debian version (bookworm64).
+Sitten ajoin komennon "vagrant up". Vagrant ei kuitenkaan onnistunut suorittamaan komentoa ja antoi virheilmoituksen:
+
+<img width="414" height="70" alt="image" src="https://github.com/user-attachments/assets/cd7e67f0-5595-45b1-a572-a590e6538b3c" />
+
+Vagrant ei siis löytänyt vagrantfilea. Avasin hakemiston graafisella liittymällä ja tajusin, että tiedosto on .txt muodossa.
+Poistin .txt päätteen perästä, ja ajoin komennon uudelleen. Tällä kertaa se toimi.
+
+<img width="340" height="36" alt="image" src="https://github.com/user-attachments/assets/f99f1f30-bcd6-4c84-b60e-ea5c2d4c7fa9" />
+
