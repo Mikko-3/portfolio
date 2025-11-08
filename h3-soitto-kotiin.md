@@ -123,3 +123,74 @@ Myös internetyhteys toimii oikein.
 
 ### d) Herra-orja verkossa
 
+Asensin virtuaalikoneille Salt repon, sekä salt-master ja salt-minion ohjelmat.
+Asennuksen vaiheet olivat samat kuin aiemmissa tehtävissä, voit halutessasi lukea ne täältä:
+https://github.com/Mikko-3/portfolio/blob/main/h1-viisikko.md#b-asenna-salt.
+Kone "m001" on master ja "m002" slave. Salt asentui molempiin ongelmitta.  
+Asennuksen jälkeen muokkasin m002 koneella "/etc/salt/minion" tiedostoa ja lisäsin sinne m001 IP-osoitteen.
+
+<img width="275" height="56" alt="image" src="https://github.com/user-attachments/assets/655c58f5-a75d-4335-bbe8-c134c9ca5992" />
+
+Lopuksi käynnistin salt-minion daemonin uudelleen komennolla "sudo systemctl restart salt-minion".
+Olemassa olevan bugin takia uudelleenkäynnistys epäonnistui, joten ajoin erilliset "stop" ja "start" komennot, jolloin uudelleenkäynnistys onnistui.
+
+Master koneella ajoin komennon "sudo salt-key", nähdäkseni, oliko orja ottanut yhteyttä.
+Avain löytyi ja hyväksyin sen komennolla "sudo salt-key -a m002".
+
+<img width="532" height="133" alt="image" src="https://github.com/user-attachments/assets/1e6e78f0-e929-4423-9fa7-7116b3c28612" />
+
+Testasin toiminnan komennolla:
+
+```
+sudo salt '*' cmd.run 'whoami'
+```
+
+Vastaus tuli perille.
+
+<img width="554" height="94" alt="image" src="https://github.com/user-attachments/assets/c5dbf3c1-af00-46d9-8927-e784ee0434de" />
+
+### e) Kaksi tilaa verkon yli
+
+Loin masterilla kaksi eri moduulia "/srv/salt/" hakemistoon, nimillä "testfile" ja "testuser".
+Tein molempiin hakemistoihin omat "init.sls" tiedostot:
+
+```
+testfile/init.sls
+/tmp/testing-file:
+  file.managed
+-----------------
+testuser/init.sls
+test:
+  user.present
+```
+
+Testasin toiminnan paikallisesti ajamalla tilat "sudo salt-call --local state.apply (nimi)" komennolla.
+Molemmat toimivat oikein ja olivat idempotentteja.
+
+<img width="299" height="104" alt="image" src="https://github.com/user-attachments/assets/23f2758d-9e8f-4970-9d4f-a67cf6cb2a72" />
+
+Seuraavaksi loin "/srv/salt" hakemistoon "top.sls" tiedoston, johon sisällytin molemmat äsken tekemäni tilat.
+
+<img width="191" height="132" alt="image" src="https://github.com/user-attachments/assets/1619fd68-fa83-482d-8973-f91d3c099012" />
+
+Testasin myös tämän ensin paikallisesti "sudo salt-call --local state.apply" komennolla, kaikki toimi odotetusti.
+
+<img width="249" height="95" alt="image" src="https://github.com/user-attachments/assets/848f1407-c1dc-448f-bdd0-f6a5d8e307aa" />
+
+Testaamisen jälkeen ajoin komennon orjalle "sudo salt '*' state.apply" komennolla.
+
+<img width="328" height="189" alt="image" src="https://github.com/user-attachments/assets/96d710bd-af57-4809-9817-197a5eabcec6" />
+
+Tilat ajettiin onnistuneesti ja seuraavaksi tarkastin vielä orjakoneella, että nämä olivat oikeasti tapahtuneet.
+Ensin testitiedosto:
+
+<img width="552" height="47" alt="image" src="https://github.com/user-attachments/assets/57e70100-5d62-485d-b41d-f0ca299c39ba" />
+
+Tiedosto löytyi oikeasta paikasta. Sitten käyttäjän tarkistus "cat /etc/passwd" komennolla:
+
+<img width="443" height="51" alt="image" src="https://github.com/user-attachments/assets/dfa39026-e329-4667-b447-977d624f2aa5" />
+
+Myös käyttäjä löytyi luotuna, eli tehtävä onnistui.
+
+# Lähdeluettelo
+
