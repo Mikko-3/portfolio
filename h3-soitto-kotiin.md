@@ -61,6 +61,16 @@ RAM: 4 GB
 
 Seurasin asennuksessa github käyttäjän "kvietmeier" kirjoittamaa ohjetta Windows 11 asennukseen (kvietmeier 2024).  
 Minulla on VirtualBox jo asennettuna, joten siirryin suoraan Vagrantin asennukseen. Aloitin lataamalla Vagrantin Windowsille Vagrantin verkkosivuilta https://developer.hashicorp.com/vagrant/install .
-Käynnistin asennusohjelman, luin ja hyväksyin sopimusehdot ja odotin hetken asennuksen valmistumista. Kun asennus oli valmis, käynnistin tietokoneen uudelleen.
+Käynnistin asennusohjelman, luin ja hyväksyin sopimusehdot ja odotin hetken asennuksen valmistumista. Kun asennus oli valmis, käynnistin tietokoneen uudelleen.  
+Ennen Vagrantin konfigurointia ohjeessa kehotettiin tarkistamaan vboxmanage:n toiminta. Loin hakemiston "hallinta" Documents hakemistoon, johon tallennan kaiken Vagrantiin liittyvän.
+Avasin PowerShellin ja siirryin hakemistoon (cd Documents/hallinta). Tämän jälkeen suoritin ohjeen komennon lisätäkseni hakemiston ympäristöksi väliaikaisesti.
 
+```
+PS C:\Users\Mikko\Documents\hallinta> $env:Path += ";C:\Program Files\Oracle\VirtualBox\
+```
 
+Suoritin komennon "vboxmanage list vms" listatakseni asennetut virtuaalikoneet, jotta näen toimiiko vboxmanage oikein. Komento listasi oikein kaikki asennetut virtuaalikoneet.
+
+<img width="345" height="49" alt="image" src="https://github.com/user-attachments/assets/669efc16-5639-4e8c-935f-548ae8b936c6" />
+
+Seuraavaksi loin Vagrantfile:n artikkelin "Two Machine Virtual Network With Debian 11 Bullseye and Vagrant" mukaan.
