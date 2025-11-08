@@ -116,3 +116,19 @@ Poistin .txt päätteen perästä, ja ajoin komennon uudelleen. Tällä kertaa s
 
 <img width="340" height="36" alt="image" src="https://github.com/user-attachments/assets/f99f1f30-bcd6-4c84-b60e-ea5c2d4c7fa9" />
 
+Asennuksen päätyttyä yhdistin molempiin koneisiin ssh yhteydellä "vagrant ssh (nimi)", ja testasin pingauksen toiminnan.
+
+<img width="602" height="52" alt="image" src="https://github.com/user-attachments/assets/ab38d14d-f945-40a1-85b1-0bdf7e41a148" />
+
+<img width="597" height="47" alt="image" src="https://github.com/user-attachments/assets/fac959b2-2606-44cb-8c8e-f840d3cad7a0" />
+
+Molemmat koneet onnistuivat pingauksessa toisiinsa. Seuraavaksi testasin vielä internet yhteyden pingaamalla Googlen nimipalvelimia:
+
+<img width="413" height="50" alt="image" src="https://github.com/user-attachments/assets/4920c5bb-fdfe-4d09-a78c-aff6956080ce" />
+
+<img width="408" height="51" alt="image" src="https://github.com/user-attachments/assets/cf7ca1f2-9339-43b1-b868-385be4ecbce1" />
+
+Myös internetyhteys toimii oikein.
+
+### d) Herra-orja verkossa
+
