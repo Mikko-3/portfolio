@@ -48,14 +48,7 @@ OS: Windows 11
 CPU: AMD Ryzen 5 Pro 4650U  
 RAM: 16 GB DDR4  
 SSD: 256 GB NVMe
-
-#### Virtualisointi
-
-Virtualisointiohjelma: Oracle VirtualBox  
-Master ja slave koneet:  
-OS: Debian 13 Trixie  
-CPU: 2 ydintä  
-RAM: 4 GB
+Virtualisointiohjelma: Oracle VirtualBox
 
 ### a) Hello Vagrant!
 
@@ -123,8 +116,6 @@ Asennuksen päätyttyä yhdistin molempiin koneisiin ssh yhteydellä "vagrant ss
 <img width="597" height="47" alt="image" src="https://github.com/user-attachments/assets/fac959b2-2606-44cb-8c8e-f840d3cad7a0" />
 
 Molemmat koneet onnistuivat pingauksessa toisiinsa. Seuraavaksi testasin vielä internet yhteyden pingaamalla Googlen nimipalvelimia:
-
-<img width="413" height="50" alt="image" src="https://github.com/user-attachments/assets/4920c5bb-fdfe-4d09-a78c-aff6956080ce" />
 
 <img width="408" height="51" alt="image" src="https://github.com/user-attachments/assets/cf7ca1f2-9339-43b1-b868-385be4ecbce1" />
 
