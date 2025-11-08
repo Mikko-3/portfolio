@@ -202,5 +202,7 @@ Karvinen, T. 2018. Salt Quickstart – Salt Stack Master and Slave on Ubuntu Lin
 Luettu: 08.11.2025.  
 Karvinen, T. 2023.  Salt Vagrant - automatically provision one master and two slaves. Luettavissa: https://terokarvinen.com/2023/salt-vagrant/#infra-as-code---your-wishes-as-a-text-file .
 Luettu: 08.11.2025.  
+Vagrant. s.a. Set up your development environment. Luettavissa: https://developer.hashicorp.com/vagrant/tutorials/get-started/setup-project .
+Luettu: 08.11.2025.  
 Vietmeier, K. 2024. Using Vagrant with Windows 11 and VirtualBox. Luettavissa: https://gist.github.com/kvietmeier/3f296be759f201d7431cf3af4d53c2db .
 Luettu: 08.11.2025.
