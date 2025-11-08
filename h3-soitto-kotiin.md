@@ -73,4 +73,12 @@ Suoritin komennon "vboxmanage list vms" listatakseni asennetut virtuaalikoneet, 
 
 <img width="345" height="49" alt="image" src="https://github.com/user-attachments/assets/669efc16-5639-4e8c-935f-548ae8b936c6" />
 
+Ajoin PowerShellissä sen jälkeen komennon "vagrant --version" testatakseni Vagrantin asentuneen oikein, näyttämällä Vagrantin version.
+
+<img width="446" height="51" alt="image" src="https://github.com/user-attachments/assets/0b554f5c-71ca-4733-a99d-436baf21337a" />
+
+Vagrant asentui onnistuneesti.
+
+### b) Virtuaalikoneiden luominen Vagrantilla
+
 Seuraavaksi loin Vagrantfile:n artikkelin "Two Machine Virtual Network With Debian 11 Bullseye and Vagrant" mukaan.
