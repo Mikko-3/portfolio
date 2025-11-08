@@ -59,6 +59,7 @@ RAM: 4 GB
 
 ### a) Vagrant asennus
 
-Aloitin lataamalla Vagrantin Windowsille. Luin ja hyväksyin sopimusehdot ja odotin hetken asennuksen valmistumista. Kun asennus oli valmis, käynnistin tietokoneen uudelleen.
+Aloitin lataamalla Vagrantin Windowsille Vagrantin verkkosivuilta https://developer.hashicorp.com/vagrant/install .
+Käynnistin asennusohjelman, luin ja hyväksyin sopimusehdot ja odotin hetken asennuksen valmistumista. Kun asennus oli valmis, käynnistin tietokoneen uudelleen.
 
 
