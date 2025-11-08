@@ -36,6 +36,29 @@ Tiivistettynä kohdat "Infra as Code - Your wishes as a text file" ja "top.sls -
 - Kirjoita ympäristö (base), orjat (*=kaikki) ja suoritettavat moduulit. YAML syntaksi.
 - Suorita ajamalla komento "sudo salt '*' state.apply".
 
+(Karvinen 2023.)
+
 ## Tehtävät
+
+### Ympäristö
+
+#### Host - Lenovo ThinkPad L14
+
+OS: Windows 11  
+CPU: AMD Ryzen 5 Pro 4650U  
+RAM: 16 GB DDR4  
+SSD: 256 GB NVMe
+
+#### Virtualisointi
+
+Virtualisointiohjelma: Oracle VirtualBox  
+Master ja slave koneet:  
+OS: Debian 13 Trixie  
+CPU: 2 ydintä  
+RAM: 4 GB
+
+### a) Vagrant asennus
+
+Aloitin lataamalla Vagrantin Windowsille. Luin ja hyväksyin sopimusehdot ja odotin hetken asennuksen valmistumista. Kun asennus oli valmis, käynnistin tietokoneen uudelleen.
 
 
