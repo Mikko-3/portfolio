@@ -52,7 +52,7 @@ Virtualisointiohjelma: Oracle VirtualBox
 
 ### a) Hello Vagrant!
 
-Seurasin asennuksessa github käyttäjän "kvietmeier" kirjoittamaa ohjetta Windows 11 asennukseen (kvietmeier 2024).  
+Seurasin asennuksessa Karl Vietmeierin kirjoittamaa ohjetta Windows 11 asennukseen (Vietmeier 2024).  
 Minulla on VirtualBox jo asennettuna, joten siirryin suoraan Vagrantin asennukseen. Aloitin lataamalla Vagrantin Windowsille Vagrantin verkkosivuilta https://developer.hashicorp.com/vagrant/install .
 Käynnistin asennusohjelman, luin ja hyväksyin sopimusehdot ja odotin hetken asennuksen valmistumista. Kun asennus oli valmis, käynnistin tietokoneen uudelleen.  
 Ennen Vagrantin konfigurointia ohjeessa kehotettiin tarkistamaan vboxmanage:n toiminta. Loin hakemiston "hallinta" Documents hakemistoon, johon tallennan kaiken Vagrantiin liittyvän.
@@ -191,6 +191,16 @@ Tiedosto löytyi oikeasta paikasta. Sitten käyttäjän tarkistus "cat /etc/pass
 <img width="443" height="51" alt="image" src="https://github.com/user-attachments/assets/dfa39026-e329-4667-b447-977d624f2aa5" />
 
 Myös käyttäjä löytyi luotuna, eli tehtävä onnistui.
+Lopuksi vielä kirjauduin ulos koneista "exit" komennolla ja sammutin virtuaalikoneet komennolla "vagrant halt", jotta ne eivät turhaan veisi resursseja taustalla.
 
 # Lähdeluettelo
 
+Karvinen, T. 2025. Palvelinten hallinta. Luettavissa: https://terokarvinen.com/palvelinten-hallinta/#h3-soitto-kotiin . Luettu: 08.11.2025.  
+Karvinen, T. 2021. Two Machine Virtual Network With Debian 11 Bullseye and Vagrant. Luettavissa: https://terokarvinen.com/2021/two-machine-virtual-network-with-debian-11-bullseye-and-vagrant/ .
+Luettu: 08.11.2025.  
+Karvinen, T. 2018. Salt Quickstart – Salt Stack Master and Slave on Ubuntu Linux. Luettavissa: https://terokarvinen.com/2018/salt-quickstart-salt-stack-master-and-slave-on-ubuntu-linux/?fromSearch=salt%20quickstart%20salt%20stack%20master%20and%20slave%20on%20ubuntu%20linux .
+Luettu: 08.11.2025.  
+Karvinen, T. 2023.  Salt Vagrant - automatically provision one master and two slaves. Luettavissa: https://terokarvinen.com/2023/salt-vagrant/#infra-as-code---your-wishes-as-a-text-file .
+Luettu: 08.11.2025.  
+Vietmeier, K. 2024. Using Vagrant with Windows 11 and VirtualBox. Luettavissa: https://gist.github.com/kvietmeier/3f296be759f201d7431cf3af4d53c2db .
+Luettu: 08.11.2025.
