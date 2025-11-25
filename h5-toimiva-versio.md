@@ -74,3 +74,32 @@ Tarkistin vielä selaimella, että muutokset tulivat näkyviin verkkoliittymää
 
 ### c) Doh!
 
+Tein readme.md tiedostoon hölmön muutoksen.
+
+<img width="329" height="34" alt="image" src="https://github.com/user-attachments/assets/8e3ac4a8-ab37-4262-840b-ba1e0762219e" />
+
+En commitanut muutoksia, joten alkuperäinen tiedosto on tallella repossa.
+Komennolla "git reset --hard" palautin edellisen version reposta, jossa readme.md oli ennallaan.
+
+<img width="345" height="89" alt="image" src="https://github.com/user-attachments/assets/bc50c8d0-02ab-4382-9df2-59003f89bbb9" />
+
+### d) Tukki
+
+Avasin lokin komennolla "git log --patch --color|less -R".
+
+<img width="368" height="340" alt="image" src="https://github.com/user-attachments/assets/4f0dcf1b-1c02-427d-b3a5-d6da91239485" />
+
+Loki näyttää ensimmäisenä viimeisimmän muutoksen.
+Ensimmäisenä näkyy commitin checksum rivillä commit.
+Tämän jälkeen on muutoksen tekijän tiedot, tässä tapauksessa oma nimeni ja sähköpostiosoitteeni.
+Seuraavaksi päiväys milloin muutos on tehty.
+Lopuksi eroavaisuudet edelliseen tiedostoon verrattuna, jossa '+' merkeillä ja vihreällä värillä näkyy lisätyt asiat ja '-' merkeillä ja punaisena poistetut.
+Muuttumattomat asiat ovat ilman merkkejä valkoisella.
+--color optio lisää värit teksteihin, muuten kaikki olisi valkoisella ja muutokset erottaisi vain edellä mainituista merkeistä.
+
+<img width="372" height="193" alt="image" src="https://github.com/user-attachments/assets/41bb47ee-6e93-4750-b950-38cb401826ae" />
+
+Loppu loki on vain ensimmäinen commit, kun repo luotiin ja kaikki lisenssin ja readmen sisältämä teksti.
+
+### e) Suolattu rakki
+
