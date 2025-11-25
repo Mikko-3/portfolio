@@ -39,6 +39,16 @@ Tiivistelmät artikkeleista, jotka löytyvät kurssin tehtäväsivulta kohdasta 
 
 ## Tehtävät
 
+### Ympäristö
+
+Host - Lenovo ThinkPad L14  
+OS: Windows 11 25H2  
+CPU: AMD Ryzen 5 Pro 4650U  
+RAM: 16 GB DDR4  
+SSD: 256 GB NVMe  
+Virtualisointiohjelma: Oracle VirtualBox  
+Virtuaalikoneen OS: Debian 13 Trixie
+
 ### a) Online
 
 Loin uuden github varaston nimellä "test-snow-repo". Lisäsin valikosta lisenssin (GNU GPL 3) ja readme tiedoston.
@@ -103,3 +113,30 @@ Loppu loki on vain ensimmäinen commit, kun repo luotiin ja kaikki lisenssin ja 
 
 ### e) Suolattu rakki
 
+Tein uuden hakemiston repoon ja lisäsin sinne init.sls tiedoston.
+
+```
+init.sls
+
+/tmp/hello-world:
+  file.managed:
+    - contents: 'Heippa maailma!'
+```
+
+Ajoin tilan komennolla "sudo salt-call --local --file-root /home/mikko/test-snow-repo state.apply hello-world".
+
+<img width="634" height="351" alt="image" src="https://github.com/user-attachments/assets/3310b288-2e3e-43eb-a852-69e687ebeb0d" />
+
+Tiedosto luotiin onnistuneesti. Olin aluksi kirjoittanut "contents" kohdan väärin "content", jolloin tila suoritettiin ilman virheitä, mutta tiedosto oli tyhjä.
+Korjattuani virheen, teksti päivittyi onnistuneesti tiedostoon.
+
+Lopuksi lisäsin muutokset repoon "git add .", "git commit" ja "git push" komennoilla.
+
+<img width="584" height="291" alt="image" src="https://github.com/user-attachments/assets/257b154b-2564-436c-a2df-0aa95e9a4bee" />
+
+## Lähdeluettelo
+
+Chacon, S. & Straub, B. 2014. Pro Git. 2. painos. Apress. New York. E-kirja. Luettu: 25.11.2025.  
+Gitlab. s.a. Common Git commands. Luettavissa: https://docs.gitlab.com/topics/git/commands/ . Luettu: 25.11.2025.  
+Karvinen, T. 2025. Palvelinten hallinta. Luettavissa: https://terokarvinen.com/palvelinten-hallinta/#h5-toimiva-versio . Luettu: 25.11.2025.  
+Karvinen, T. 2024. Suolax - Commits. Luettavissa: https://github.com/terokarvinen/suolax/commits/main/ . Luettu: 25.11.2025.
