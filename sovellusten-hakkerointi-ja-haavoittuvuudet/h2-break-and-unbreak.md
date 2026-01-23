@@ -7,7 +7,7 @@ Kotitehtävän h2 raportti. Kotitehtävän tehtävänanto löytyy kurssin verkko
 ### OWASP Top 10 - A01 Broken Access Control
 
 - Rikkinäinen pääsynvalvonta on yksi yleisimmistä haavoittuvuuksista.
-- Pääsynhallinnan haavoittuvuuksia on mm:
+- Pääsynhallinnan haavoittuvuuksia on mm.:
     - Vähimmän käyttöoikeuden periaatteen noudattamattomuus
     - Käyttöoikeuksien varmistamisen ohittaminen esim. URL tai HTML muokkaamalla
     - Toisen tilin tarkastelu tai muokkaaminen, antamalla sen uniikin tunnuksen
@@ -17,21 +17,45 @@ Kotitehtävän h2 raportti. Kotitehtävän tehtävänanto löytyy kurssin verkko
     - Tapahtumalokien kerääminen ja monitorointi
 - Kehittäjien ja laadunvalvonnan pitäisi testata pääsyhallintaa
 
-(OWASP Top 10 Team 2025.)
+(OWASP Top 10 Team s.a.)
 
 ###  Find Hidden Web Directories - Fuzz URLs with ffuf
 
 - Fuff on työkalu, jolla voi automatisoida piilotettujen sivujen etsimistä webpalvelimilta (ja muitakin asioita).
-- Fuff:n voi asentaa apt-get komennolla Debianin oletuskirjastosta
+- Fuff:n voi asentaa apt-get komennolla Debianin oletuskirjastosta.
 - Fuff tarvitsee sanakirjan, josta se testaa eri hakemistojen nimiä.
 - Tiedoston voisi kirjoittaa itsekin, mutta valmiita sanakirjoja löytyy internetistä (Seclists by Daniel Miessler käytetään artikkelissa).
 - `./fuff` näyttää kaikki ohjelman parametrit, `./fuff |& less` näyttää ne paremmin luettavassa muodossa.
 - `-w common.txt` kertoo käytettävän sanakirjan, `-u http://...` kertoo kohdeosoitteen.
 - Filttereillä voi seuloa Fuff:n ulosantia, filtterit näkee `./fuff |& less` komennolla kohdasta "FILTER OPTIONS".
 
+(Karvinen 2023.)
+
 ### Access control vulnerabilities and privilege escalation
 
+- Pääsynhallinta on riippuvainen tunnistautumisesta (käyttäjä on kuka hän väittää olevansa) ja istunnon hallinnasta (seuraavat http pyynnöt ovat samalta käyttäjältä).
+- Erilaisia pääsynhallintoja on vertikaalinen, horisontaalinen ja kontekstipohjainen.
+- Vertikaalisessa estetään ja sallitaan pääsy tiettyihin ominaisuuksiin.
+- Horisontaalisessa käyttäjillä on pääsy samantyyppisiin resursseihin (esim. pankkitili), mutta lupa vain oman tilinsä resursseihin (tilitapahtumat ja tilisiirrot vain omalta tililtään).
+- Kontekstipohjaisessa estetään tai sallitaan pääsy sovelluksen tilasta riippuen. Tarkoitus estää käyttäjää tekemästä asioita väärässä järjestyksessä.
+- Haavoittuvuudet johtuvat usein mm.:
+    - suojaamattomista ominaisuuksista (admin sivulle ei pääsynhallintaa tms.)
+    - parametripohjaisesta pääsynhallinnasta (oikeudet määritellään kirjautuessa ja tallennetaan esim. keksiin, jonka sisältö määrittää, onko käyttäjällä lupaa johonkin. Tätä sisältöä voi muokata ja siten päästä käsiksi resursseihin ilman lupaa.)
+    - Alustan virheellinen konfigurointi (esim. tiettyjen URL ja HTTP ominaisuuksien estäminen käyttäjien roolin mukaan. Jos alusta tukee ei-standardeja HTTP kutsuja, voidaan nämä estot kiertää.)
+- Haavoittuvuuksia voi välttää mm.:
+    - Älä luota vain monimutkaistamiseen
+    - Jos resurssi ei ole julkinen, kiellä pääsy oletusarvoisesti
+    - Auditoi ja testaa pääsynhallinta kattavasti varmistaaksesi oikeanlainen toiminta
 
+(Portswigger s.a.)
 
 ### Raportin kirjoittaminen
 
+- Kerro tarkkaan mitä teit ja mitä tapahtui, on parasta kirjoittaa samalla kun tekee.
+- Raportin tulee olla toistettava, täsmällinen ja helppolukuinen.
+    - Toisen henkilön olisi saatava sama tulos raporttia seuraamalla.
+    - Mitä komentoja annoit, onnistuiko, mitä tapahtui sen jälkeen, millä testillä totesit tämän, mahd. virheilmoitukset.
+    - Kirjoita imperfektissä, käytä väliotsikoita, kirjoita huolellista kieltä ja kanavaan sopivasti.
+- Viittaa lähteisiin, älä sepitä tai plagioi. Merkitse lähteet selkeästi.
+
+(Karvinen 2006.)
