@@ -21,13 +21,13 @@ Kotitehtävän h2 raportti. Kotitehtävän tehtävänanto löytyy kurssin verkko
 
 ###  Find Hidden Web Directories - Fuzz URLs with ffuf
 
-- Fuff on työkalu, jolla voi automatisoida piilotettujen sivujen etsimistä webpalvelimilta (ja muitakin asioita).
-- Fuff:n voi asentaa apt-get komennolla Debianin oletuskirjastosta.
-- Fuff tarvitsee sanakirjan, josta se testaa eri hakemistojen nimiä.
+- Ffuf on työkalu, jolla voi automatisoida piilotettujen sivujen etsimistä webpalvelimilta (ja muitakin asioita).
+- Ffuf:n voi asentaa apt-get komennolla Debianin oletuskirjastosta.
+- Ffuf tarvitsee sanakirjan, josta se testaa eri hakemistojen nimiä.
 - Tiedoston voisi kirjoittaa itsekin, mutta valmiita sanakirjoja löytyy internetistä (Seclists by Daniel Miessler käytetään artikkelissa).
-- `./fuff` näyttää kaikki ohjelman parametrit, `./fuff |& less` näyttää ne paremmin luettavassa muodossa.
+- `./ffuf` näyttää kaikki ohjelman parametrit, `./ffuf |& less` näyttää ne paremmin luettavassa muodossa.
 - `-w common.txt` kertoo käytettävän sanakirjan, `-u http://...` kertoo kohdeosoitteen.
-- Filttereillä voi seuloa Fuff:n ulosantia, filtterit näkee `./fuff |& less` komennolla kohdasta "FILTER OPTIONS".
+- Filttereillä voi seuloa Ffuf:n ulosantia, filtterit näkee `./ffuf |& less` komennolla kohdasta "FILTER OPTIONS".
 
 (Karvinen 2023.)
 
