@@ -88,7 +88,7 @@ Kokeilin jättää "type" kohdan tyhjäksi, kirjoitin tekstiä kenttään ja pai
 Vastaus oli "not found", mutta nyt pystyin lähettämään kyselyssä tekstiä.
 Yritin seuraavaksi saada kaikki salasanat selville lisäämällä kenttään `' OR 1=1;-- `.
 Näin kaikki vastaukset olisivat aina tosia, joten kaikki salasanat palautettaisiin.
-Vastauksena sain salasanan "foo", mutta en muita salasanoja. Kenttään palautetaan nähtävästi vain yksi salasana kerrallaan.
+Vastauksena sain salasanan "foo", mutta en muita salasanoja.
 
 Yritykseni oli lähempänä oikeaa kuin luulinkaan, mutta "harhauduin" ajattelussani tarpeettomille sivupoluille.
 Mietin ensin, onko tietokannassa toista taulua, jossa olisi käyttäjien nimet ja pin koodit, jotta voisin kokeilla administratorin pin koodia kenttään.
