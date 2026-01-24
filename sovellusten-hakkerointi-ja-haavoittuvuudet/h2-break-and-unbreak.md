@@ -92,8 +92,8 @@ Vastauksena sain salasanan "foo", mutta en muita salasanoja. Kenttään palautet
 
 Yritykseni oli lähempänä oikeaa kuin luulinkaan, mutta "harhauduin" ajattelussani tarpeettomille sivupoluille.
 Mietin ensin, onko tietokannassa toista taulua, jossa olisi käyttäjien nimet ja pin koodit, jotta voisin kokeilla administratorin pin koodia kenttään.
-Koitin selvittää tietokannan sisältöä Portswigger sivuston artikkelin "What is SQL Injection?" avulla (Portswigger b s.a.).
-Löysin kohdan "Examining the database - Listing the contents" jossa kerrottiin esimerkkejä tavoista selvittää tietokannan sisältö.
+Koitin selvittää tietokannan sisältöä Portswigger sivuston artikkelin "What is SQL Injection?" avulla.
+Löysin kohdan "Examining the database - Listing the contents" (Portswigger b s.a.), jossa kerrottiin esimerkkejä tavoista selvittää tietokannan sisältö.
 Kokeilin läpi eri komentoja, mutta sain vastaukseksi vain internal server erroreita.
 
 <img width="547" height="506" alt="image" src="https://github.com/user-attachments/assets/797a6bc5-5bc1-4f8e-8dc0-ed48a3844e74" />
@@ -177,3 +177,57 @@ Korjaus on varmasti luokkaa teippi ja kengännauha, mutta tällaista saa tällä
 - Korjattu muuntamalla syöte kokonaisluvuksi, jos ei onnistu, palauta `None`.
 - Muutetaan 'pin' takaisin merkkijonoksi, jotta se voidaan liittää SQL kyselyyn.
 
+## c) Solve dirfuzt-1
+
+Asensin Ffuf:n artikkelin ohjeiden mukaan, sekä latasin sanakirjan. Tämän jälkeen latasin dirfuzt-1 binäärin wget toiminnolla.
+Otin virtuaalikoneen verkon pois käytöstä, ja suoritin binäärin. Siirryin osoitteeseen selaimessa, tarkistaakseni sivuston toiminnan.
+Sivusto toimi, joten seuraavaksi suoritin fuzzauksen ffuf:lla komennolla: `ffuf -w common.txt -u http://127.0.0.2:8000/FUZZ`.
+Ffuf palautti tuhottoman paljon 200 vastauksia, joissa kaikissa oli samaa niiden koko, 154 tavua.
+Ajoin saman komennon uudelleen filtterillä `-fs 154`, jolloin kaikki tuon kokoiset sivut filtteröidään pois.
+Jäljelle jäivät nämä sivut:
+
+<img width="510" height="224" alt="image" src="https://github.com/user-attachments/assets/83ed3683-8132-4e40-8d06-2ac51947ae26" />
+
+Tavoitteena oli löytää admin sivu ja versionhallintaan liittyvä sivu.
+Siirryin selaimella ensin ".git" osoitteeseen, sillä ajattelin sen olevan versionhallinnan pääsivu.
+
+<img width="472" height="201" alt="image" src="https://github.com/user-attachments/assets/c8c11f77-c09a-42c9-9fec-708c18d21fc2" />
+
+Onnistuneen kokeilun jälkeen, siirryin "wp-admin" osoitteeseen, sillä se vaikutta aika selvästi admin sivulta.
+
+<img width="472" height="201" alt="image" src="https://github.com/user-attachments/assets/3a828e83-aeb0-466a-9ea3-b995a18a30dc" />
+
+Tämäkin arvaus osoittautui oikeaksi.
+
+## d) Break into 020-your-eyes-only
+
+Ympäristö tähän tehtävään pysyi samana kuin edellisessä tehtävässä.
+
+### Hakkerointi
+
+Asennettuani artikkelia (Karvinen 2024) seuraten virtualenv:n ja djangon, käynnistin ohjeiden mukaisesti "manage.py" ohjelman.
+Testasin pääsyn sivulle osoitteesta `http://127.0.0.1:8000`.
+
+<img width="353" height="241" alt="image" src="https://github.com/user-attachments/assets/f22f1e3b-8981-4d90-901b-b31e9971878b" />
+
+Päästyäni sivulle, avasin uuden terminaalin ja kokeilin ffuf:ia osoitteeseen.
+`ffuf -w common.txt -u http://127.0.0.1:8000/FUZZ`
+Komento palautti vain yhden osuman, "admin-console".
+
+<img width="501" height="47" alt="image" src="https://github.com/user-attachments/assets/06e7303b-982a-4198-8c54-23137376af48" />
+
+Siirryin osoitteeseen selaimella. Sivusto kuitenkin uudelleenohjasi minut kirjautumissivulle.
+
+<img width="350" height="136" alt="image" src="https://github.com/user-attachments/assets/f91d157f-9d30-4ee9-aa15-225bc94c8170" />
+
+
+
+## Lähdeluettelo
+
+Karvinen, T. 2006.  Raportin kirjoittaminen. Luettavissa: https://terokarvinen.com/2006/raportin-kirjoittaminen-4/. Luettu: 23.01.2026. 
+Karvinen, T. 2023. Find Hidden Web Directories - Fuzz URLs with ffuf. Luettavissa: https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/. Luettu: 23.01.2026. 
+Karvinen, T. 2024.
+OWASP Top 10 Team s.a. A01:2021 – Broken Access Control. Luettavissa: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/index.html. Luettu: 23.01.2026. 
+Portswigger a s.a. Access control vulnerabilities and privilege escalation. Luettavissa: https://portswigger.net/web-security/access-control. Luettu: 23.01.2026. 
+Portswigger b s.a. Examining the database in SQL injection attacks. Luettavissa: https://portswigger.net/web-security/sql-injection/examining-the-database. Luettu: 24.01.2026. 
+Stackoverflow 2019. Cast Flask form value to int. Luettavissa: https://stackoverflow.com/a/12551565. Luettu: 24.01.2026. 
