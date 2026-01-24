@@ -260,11 +260,12 @@ Nyt vastassa on "403 Frobidden" virhe, eli korjaus toimii.
 
 ## Lähdeluettelo
 
-Django Software Foundation s.a. Using the Django authentication system. Luettavissa: https://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.mixins.UserPassesTestMixin. Luettu: 24.01.2026. 
-Karvinen, T. 2006.  Raportin kirjoittaminen. Luettavissa: https://terokarvinen.com/2006/raportin-kirjoittaminen-4/. Luettu: 23.01.2026. 
-Karvinen, T. 2023. Find Hidden Web Directories - Fuzz URLs with ffuf. Luettavissa: https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/. Luettu: 23.01.2026. 
-Karvinen, T. 2024. Hack'n Fix. Luettavissa: https://terokarvinen.com/hack-n-fix/. Luettu: 24.01.2026. 
-OWASP Top 10 Team s.a. A01:2021 – Broken Access Control. Luettavissa: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/index.html. Luettu: 23.01.2026. 
-Portswigger a s.a. Access control vulnerabilities and privilege escalation. Luettavissa: https://portswigger.net/web-security/access-control. Luettu: 23.01.2026. 
-Portswigger b s.a. Examining the database in SQL injection attacks. Luettavissa: https://portswigger.net/web-security/sql-injection/examining-the-database. Luettu: 24.01.2026. 
-Stackoverflow 2019. Cast Flask form value to int. Luettavissa: https://stackoverflow.com/a/12551565. Luettu: 24.01.2026. 
+Django Software Foundation s.a. Using the Django authentication system. Luettavissa: https://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.mixins.UserPassesTestMixin. Luettu: 24.01.2026.  
+Karvinen, T. 2006. Raportin kirjoittaminen. Luettavissa: https://terokarvinen.com/2006/raportin-kirjoittaminen-4/. Luettu: 23.01.2026.  
+Karvinen, T. 2023. Find Hidden Web Directories - Fuzz URLs with ffuf. Luettavissa: https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/. Luettu: 23.01.2026.  
+Karvinen, T. 2024. Hack'n Fix. Luettavissa: https://terokarvinen.com/hack-n-fix/. Luettu: 24.01.2026.  
+Karvinen, T. 2026. Application hacking - 2026 Spring. Luettavissa: https://terokarvinen.com/application-hacking/#laksyt. Luettu: 24.01.2026.  
+OWASP Top 10 Team s.a. A01:2021 – Broken Access Control. Luettavissa: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/index.html. Luettu: 23.01.2026.  
+Portswigger a s.a. Access control vulnerabilities and privilege escalation. Luettavissa: https://portswigger.net/web-security/access-control. Luettu: 23.01.2026.  
+Portswigger b s.a. Examining the database in SQL injection attacks. Luettavissa: https://portswigger.net/web-security/sql-injection/examining-the-database. Luettu: 24.01.2026.  
+Stackoverflow 2019. Cast Flask form value to int. Luettavissa: https://stackoverflow.com/a/12551565. Luettu: 24.01.2026.
