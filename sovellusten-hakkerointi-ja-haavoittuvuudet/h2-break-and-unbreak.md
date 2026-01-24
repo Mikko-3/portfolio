@@ -59,3 +59,24 @@ Kotitehtävän h2 raportti. Kotitehtävän tehtävänanto löytyy kurssin verkko
 - Viittaa lähteisiin, älä sepitä tai plagioi. Merkitse lähteet selkeästi.
 
 (Karvinen 2006.)
+
+## a) Break into 010-staff-only
+
+### Ympäristö
+
+Virtuaalikone:
+
+- OS: Debian 13 Trixie
+- Selain: Firefox 140.7.0esr (64-bit)
+- 2 ydintä, 4 GB muistia
+- NAT verkko, tehtävän ajaksi kytketty pois päältä
+
+### Hakkerointi
+
+Asensin artikkelissa mainitut ohjelmistot ja latasin "teros-challenges" zip paketin.
+Purin paketin unzip:lla ja avasin "010-staff-only" tehtävän. Asensin artikkelin mukaan myös python3-flask ja python3-flask-sqlalchemy paketit.
+Kytkin varmuuden vuoksi verkkoyhteyden pois päältä virtuaalikoneesta ja käynnistin harjoituksen uudelleen.
+Siirryin Firefoxilla osoitteeseen, jossa sovellus toimi: `http://127.0.0.1:5000`.
+
+<img width="639" height="238" alt="image" src="https://github.com/user-attachments/assets/39fcbe3f-8f91-4025-8629-63ff5c2f8d62" />
+
