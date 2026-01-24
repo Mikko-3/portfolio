@@ -47,7 +47,7 @@ Kotitehtävän h2 raportti. Kotitehtävän tehtävänanto löytyy kurssin verkko
     - Jos resurssi ei ole julkinen, kiellä pääsy oletusarvoisesti
     - Auditoi ja testaa pääsynhallinta kattavasti varmistaaksesi oikeanlainen toiminta
 
-(Portswigger s.a.)
+(Portswigger a s.a.)
 
 ### Raportin kirjoittaminen
 
@@ -73,10 +73,50 @@ Virtuaalikone:
 
 ### Hakkerointi
 
-Asensin artikkelissa mainitut ohjelmistot ja latasin "teros-challenges" zip paketin.
+Asensin artikkelissa (Karvinen 2024) mainitut ohjelmistot ja latasin "teros-challenges" zip paketin.
 Purin paketin unzip:lla ja avasin "010-staff-only" tehtävän. Asensin artikkelin mukaan myös python3-flask ja python3-flask-sqlalchemy paketit.
 Kytkin varmuuden vuoksi verkkoyhteyden pois päältä virtuaalikoneesta ja käynnistin harjoituksen uudelleen.
 Siirryin Firefoxilla osoitteeseen, jossa sovellus toimi: `http://127.0.0.1:5000`.
 
 <img width="639" height="238" alt="image" src="https://github.com/user-attachments/assets/39fcbe3f-8f91-4025-8629-63ff5c2f8d62" />
+
+Hakkerointi oli itselleni haastavaa.
+Kokeilin ensin sivuston perustoiminnan antamalla kerrotun oman pin koodini 123.
+Ymmärsin, että minun olisi tehtävä SQL injektio, mutta input field ei sallinut muita merkkejä kuin numeroita.
+Tutkiskelin sivua F12 dev toolseilla, ja huomasin "form" kohdassa "input" kentän, jossa oli kohta `type="number"`.
+Kokeilin jättää "type" kohdan tyhjäksi, kirjoitin tekstiä kenttään ja painoin "reveal my password" nappia.
+Vastaus oli "not found", mutta nyt pystyin lähettämään kyselyssä tekstiä.
+Yritin seuraavaksi saada kaikki salasanat selville lisäämällä kenttään `' OR 1=1;-- `.
+Näin kaikki vastaukset olisivat aina tosia, joten kaikki salasanat palautettaisiin.
+Vastauksena sain salasanan "foo", mutta en muita salasanoja. Kenttään palautetaan nähtävästi vain yksi salasana kerrallaan.
+
+Yritykseni oli lähempänä oikeaa kuin luulinkaan, mutta "harhauduin" ajattelussani tarpeettomille sivupoluille.
+Mietin ensin, onko tietokannassa toista taulua, jossa olisi käyttäjien nimet ja pin koodit, jotta voisin kokeilla administratorin pin koodia kenttään.
+Koitin selvittää tietokannan sisältöä Portswigger sivuston artikkelin "What is SQL Injection?" avulla (Portswigger b s.a.).
+Löysin kohdan "Examining the database - Listing the contents" jossa kerrottiin esimerkkejä tavoista selvittää tietokannan sisältö.
+Kokeilin läpi eri komentoja, mutta sain vastaukseksi vain internal server erroreita.
+
+<img width="547" height="506" alt="image" src="https://github.com/user-attachments/assets/797a6bc5-5bc1-4f8e-8dc0-ed48a3844e74" />
+
+<img width="530" height="347" alt="image" src="https://github.com/user-attachments/assets/605968ce-e545-4db0-b2fd-4ba953789261" />
+
+En lopulta keksinyt enää tapoja saada salasana selville, joten menin "Hack 'n' Fix" (Karvinen 2024) artikkelin vinkit osioon.
+Ensimmäinen osio ei tarjonnut minulle tarpeeksi tietoa yrittää lisää, joten turhautuneena siirryin suoraan seuraavaan vinkki osioon.
+Sieltä huomasin "LIMIT" funktion, jonka sytaksi oli myös avattu.
+Tajusin, että sillä voisin saada taulun muita rivejä palautettua vastauksessa.
+Kokeilin lisätä sen kyselyyn: `' OR 1=1 LIMIT 0,5;--`.
+Ajattelin kyselyn palauttavan ensimmäisen salasanan ja neljä seuraavaa, mutta vastauksessa oli vain yksi salasana, "foo".
+Kokeilin seuraavaksi samaa kyselyä muuttamalla offsettia yhdellä isommaksi: `' OR 1=1 LIMIT 1,5;--`.
+Vastauksena oli oma salasanani, jonka sain laittamalla kenttään pin koodini 123.
+Kasvatin offsetia taas yhdellä: `' OR 1=1 LIMIT 2,5;--` ja sain vastaukseksi adminin salasanan.
+
+<img width="467" height="356" alt="image" src="https://github.com/user-attachments/assets/895be22b-a143-4b7f-91b8-13fbcf924985" />
+
+**TL;DR**
+
+- Kyseessä SQL injektio haavoittuvuus (Subverting application logic).
+- Muokkaamalla selaimen developer toolseilla input kentän type:n tyhjäksi, se sallii muiden kuin numeroiden lähettämisen kyselyssä.
+- Kirjoittamalla kenttään `' OR 1=1 LIMIT 2,1;--`, kysely palauttaa vastauksena admin salasanan (kolmas salasana taulussa).
+
+## b) Fix the 010-staff-only vulnerability from source code
 
