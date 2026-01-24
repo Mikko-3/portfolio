@@ -120,3 +120,60 @@ Kasvatin offsetia taas yhdellä: `' OR 1=1 LIMIT 2,5;--` ja sain vastaukseksi ad
 
 ## b) Fix the 010-staff-only vulnerability from source code
 
+Avasin sovelluksen lähdekoodin `staff-only.py` ja tutkin koodia.
+Aikani pähkäiltyäni koodin toiminnan logiikkaa, aloin miettimään, miten estäisin muiden kuin numeroiden lisäämisen syötteeseen.
+Huomasin koodissa kohdan:
+```
+def hello():
+        if "pin" in request.form:
+                pin = str(request.form['pin'])
+        else:
+                pin = "0"
+```
+Tässä funktiossa verkkosivun syöte talletetaan muuttujaan "pin".
+Syöte otetaan "str" muodossa, eli merkkijonona. Tämä sallii kaikki mahdolliset merkit, jos niitä on syötteeseen laitettu.
+Muutin koodista kyseisen kohdan muotoon: `pin = int(request.form['pin'])`.
+Ajattelin tämän tuottavan virheen, jos syötteessä on jotain muuta, kuin kokonaislukuja.
+Tämä estäisi injektoimasta koodia syötteeseen, kuten omani edellisessa osassa (`' OR 1=1 LIMIT 2,5;--`).
+Testasin toiminnan käynnistämällä ohjelman ja laittamalla syötteeseen ensin pin koodin 123, tarkistaakseni tarkoituksen mukaisen toiminnan.
+Tuloksena oli internal server error, joten korjaus ei toiminut.
+
+Seuraavaksi aloin tutkia internetistä ratkaisuja syötteen muuntamiseen kokonaisluvuksi.
+Löysin lopulta Stackoverflow vastauksen, jossa kerrottiin miten syöte voidaan muuttaa kokonaisluvuksi: `request.form.get` `type=int` argumentilla (Stackoverflow 2019).
+Tämä muuntaa syötteen kokonaisluvuksi, mutta jos se ei ole mahdollista, palauttaa arvon `None`.
+Tämän avulla ohjelma ei kohtaa sisäistä virhettä, jos kenttään syöttää muuta kuin numeroita, vaan palauttaa tekstin "not found".
+Kyseinen korjaus ei vielä toiminut kun testasin sitä, sillä en huomannut ohjelman lokissa virhettä, jossa se ei voinut liittää merkkijonoon kokonaislukua.
+
+<img width="597" height="101" alt="image" src="https://github.com/user-attachments/assets/6831c39f-ba56-4f39-9d99-dc98fc37ff84" />
+
+Huomattuani virheilmoituksen, korjasin ongelman muuntamalla "pin" muuttujan takaisin kokonaisluvusta merkkijonoksi:
+
+```
+def hello():
+        if "pin" in request.form:
+                pin = request.form.get('pin', type=int)
+        else:
+                pin = "0"
+
+        pin = str(pin)
+        sql = "SELECT password FROM pins WHERE pin='"+pin+"';"
+        row = ""
+```
+
+Tämän jälkeen sovellus toimi normaalisti antamalla pin koodin "123".
+Kun kokeilin SQL injektiota, palautti ohjelma tekstin "(not found)".
+
+<img width="442" height="320" alt="image" src="https://github.com/user-attachments/assets/1885c1bb-3678-4b1a-959d-2f6b41815f61" />
+
+<img width="286" height="485" alt="image" src="https://github.com/user-attachments/assets/13862142-3c92-4679-b2aa-7da982a8724c" />
+
+<img width="381" height="625" alt="image" src="https://github.com/user-attachments/assets/287af688-f369-4283-861d-e8674fec5456" />
+
+Korjaus on varmasti luokkaa teippi ja kengännauha, mutta tällaista saa tällä rahalla.
+
+**TL;DR**
+
+- Virhe hello() funktiossa, jossa 'pin' muuttujaan tallennettava syöte sallii muitakin merkkejä, kuin numeroita.
+- Korjattu muuntamalla syöte kokonaisluvuksi, jos ei onnistu, palauta `None`.
+- Muutetaan 'pin' takaisin merkkijonoksi, jotta se voidaan liittää SQL kyselyyn.
+
