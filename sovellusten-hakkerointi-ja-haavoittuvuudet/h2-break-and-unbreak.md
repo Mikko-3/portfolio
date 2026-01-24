@@ -193,9 +193,13 @@ Siirryin selaimella ensin ".git" osoitteeseen, sillä ajattelin sen olevan versi
 
 <img width="472" height="201" alt="image" src="https://github.com/user-attachments/assets/c8c11f77-c09a-42c9-9fec-708c18d21fc2" />
 
-Onnistuneen kokeilun jälkeen, siirryin "wp-admin" osoitteeseen, sillä se vaikutta aika selvästi admin sivulta.
+FLAG{tero-git-3cc87212bcd411686a3b9e547d47fc51}
 
-<img width="472" height="201" alt="image" src="https://github.com/user-attachments/assets/3a828e83-aeb0-466a-9ea3-b995a18a30dc" />
+Onnistuneen kokeilun jälkeen, siirryin "wp-admin" osoitteeseen, sillä se vaikutti aika selvästi admin sivulta.
+
+<img width="512" height="191" alt="image" src="https://github.com/user-attachments/assets/17bf726a-efc2-4187-8963-c65cd0ebb111" />
+
+FLAG{tero-wpadmin-3364c855a2ac87341fc7bcbda955b580}
 
 Tämäkin arvaus osoittautui oikeaksi.
 
@@ -220,13 +224,46 @@ Siirryin osoitteeseen selaimella. Sivusto kuitenkin uudelleenohjasi minut kirjau
 
 <img width="350" height="136" alt="image" src="https://github.com/user-attachments/assets/f91d157f-9d30-4ee9-aa15-225bc94c8170" />
 
+Kokeilin kiertää kirjautumisen kirjoittamalla "username" kenttään `adminstrator'--` ja `admin'--`, mutta nämä eivät toimineet.
+En valitettavasti keksinyt enempää tapoja kiertää kirjautuminen, eivätkä artikkelin vihjeet auttaneet minua, joten siirryin walkthrough osioon.
+Seurasin Robinin ohjeita (Niinemets 2024), ja onnistuin pääsemään konsoliin käsiksi.
 
+Loin uuden käyttäjän "lorem" salasanalla "ipsum123" ja kirjauduin sisään.
+Tämän jälkeen siirryin aiemmin löytämääni osoitteeseen `admin-console`.
+
+<img width="484" height="376" alt="image" src="https://github.com/user-attachments/assets/13302db7-3ab4-47c6-aec8-c27869f97abf" />
+
+Ratkaisu oli yllättävän yksinkertainen, mutta jo 8 tuntia tehtäviä tehtyäni, en onnistunut enää miettimään keinoja murtautua sivulle.
+Kiitos walkthrough:sta!
+
+## e) Fix the 020-your-eyes-only vulnerability
+
+Yritin ratkaista haavoittuvuuden ensin itse vinkkejä seuraamalla.
+Etsin vinkatun "views.py" tiedoston hakemistosta ja avasin sen tutkiakseni sen sisältöä.
+Tutkin myös vinkattua "UserPassesTestMixin" mixin:ä, mutta en onnistunut löytämään virhettä koodista.
+Palasin siis takaisin walkthroughun, josta löysin vastauksen.
+Lainaus Robinin sivuilta (Niinemets 2024):
+
+> Eli virhe tapahtui kohdassa /hats/views.py ja ongelma oli että viimeisessä "test_func" funktiossa oli unohdettu tarkistaa että käyttäjä läpäisee tarkistuksen, jotta pääsee admin consoleen.
+
+Djangon toiminta on minulle tuntematonta, enkä täten osannut havaita tätä suhteellisen yksinkertaista virhettä.
+Djangon dokumentaatioita tutkiessani (Django Software Foundation s.a.) en onnistunut kunnolla hahmottamaan, miten tämä "UserPassesTestMixin" mixin toimii, joten sen korjaaminenkaan olisi tuskin onnistunut ilman ohjeita.
+
+Lisäsin ohjeissa olevan tarkistuksen funktioon ja tallensin muutokset.
+
+<img width="580" height="70" alt="image" src="https://github.com/user-attachments/assets/9f0c288b-424a-41c1-b229-71a55f5a9adb" />
+
+Tämän jälkeen käynnistin "manage.py" ohjelman uudelleen ja koetin päästä admin consoleen käsiksi.
+Nyt vastassa on "403 Frobidden" virhe, eli korjaus toimii.
+
+<img width="543" height="153" alt="image" src="https://github.com/user-attachments/assets/c73c554b-5867-4423-a0b6-3440183cac7b" />
 
 ## Lähdeluettelo
 
+Django Software Foundation s.a. Using the Django authentication system. Luettavissa: https://docs.djangoproject.com/en/dev/topics/auth/default/#django.contrib.auth.mixins.UserPassesTestMixin. Luettu: 24.01.2026. 
 Karvinen, T. 2006.  Raportin kirjoittaminen. Luettavissa: https://terokarvinen.com/2006/raportin-kirjoittaminen-4/. Luettu: 23.01.2026. 
 Karvinen, T. 2023. Find Hidden Web Directories - Fuzz URLs with ffuf. Luettavissa: https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/. Luettu: 23.01.2026. 
-Karvinen, T. 2024.
+Karvinen, T. 2024. Hack'n Fix. Luettavissa: https://terokarvinen.com/hack-n-fix/. Luettu: 24.01.2026. 
 OWASP Top 10 Team s.a. A01:2021 – Broken Access Control. Luettavissa: https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/index.html. Luettu: 23.01.2026. 
 Portswigger a s.a. Access control vulnerabilities and privilege escalation. Luettavissa: https://portswigger.net/web-security/access-control. Luettu: 23.01.2026. 
 Portswigger b s.a. Examining the database in SQL injection attacks. Luettavissa: https://portswigger.net/web-security/sql-injection/examining-the-database. Luettu: 24.01.2026. 
