@@ -98,9 +98,9 @@ En loppujenlopuksi ole varma, kuinka hyvä ratkaisu tämä kokonaisuudessaan on,
 
 <img width="451" height="365" alt="image" src="https://github.com/user-attachments/assets/fbe2965b-df00-435e-8a80-21e007f07b66" />
 
-<img width="506" height="680" alt="image" src="https://github.com/user-attachments/assets/d0aef2eb-efa4-49be-8daa-d0f0d8838aee" />
+<img width="253" height="340" alt="image" src="https://github.com/user-attachments/assets/d0aef2eb-efa4-49be-8daa-d0f0d8838aee" />
 
-<img width="347" height="716" alt="image" src="https://github.com/user-attachments/assets/44c4544b-ef96-4653-8c7d-b5d2e4e3ba10" />
+<img width="173" height="358" alt="image" src="https://github.com/user-attachments/assets/44c4544b-ef96-4653-8c7d-b5d2e4e3ba10" />
 
 <img width="118" height="131" alt="image" src="https://github.com/user-attachments/assets/36b134cf-3283-433a-b2e1-47b35036fbf0" />
 
