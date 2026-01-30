@@ -15,7 +15,7 @@ Virtuaalikone:
 ## a) Strings
 
 Latasin harjoituskansion Teron sivuilta wget avulla, ja purin paketin unzip:lla.
-Siirryin `challenges\passtr` hakemistoon ja luin 'README.md' tiedoston.
+Siirryin `challenges/passtr` hakemistoon ja luin 'README.md' tiedoston.
 Asensin siinä listatut esivaatimukset (make, gcc, micro) ja ajoin ohjelman `./passtr` komennolla.
 
 <img width="556" height="106" alt="image" src="https://github.com/user-attachments/assets/0f41db51-1d6b-4000-b12d-3c323c910313" />
@@ -27,6 +27,9 @@ Ajoin komennon `strings passtr |less` ja rupesin etsimään salasanaan viittaava
 Huomasinkin heti tekstin alkupäässä kohdan `What's the password?`, jossa ohjelma kysyi salasanaa.
 Tämän jälkeen oli luultavasti if-lauseke koodissa, jossa tarkastetaan, vastaako käyttäjän syöte salasanaa.
 Sen alta löytyikin selkokielisenä salasana `sala-hakkeri-321`.
+
+<img width="403" height="176" alt="image" src="https://github.com/user-attachments/assets/8e101716-d6c3-469b-b90e-cf632cfb7c9f" />
+
 Suljin less:n ja käynnistin ohjelman uudelleen kokeillakseni salasanaa.
 Salasana oli oikea!
 
