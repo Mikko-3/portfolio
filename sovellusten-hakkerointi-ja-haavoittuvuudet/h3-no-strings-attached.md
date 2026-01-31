@@ -154,4 +154,5 @@ Salasana oli oikein ja lippu vastasi koodista löytynyttä.
 
 Kayaliev, L. 2025. Unpacking UPX-packed Binaries - Complete Guide. Luettaissa: https://greatbinary.win/article/unpacking-upx-packed-binaries/. Luettu: 31.01.2026.  
 Karvinen, T. 2026. Application hacking - 2026 Spring. Luettavissa: https://terokarvinen.com/application-hacking/#laksyt. Luettu: 31.01.2026.  
+Oberhumer, M., Molnár, L. & Reiser, J. UPX - the Ultimate Packer for eXecutables. Luettavissa: https://upx.github.io/. Luettu: 31.01.2026.  
 Slobodyanyuk, Y. 2017. Binary obfuscation - String obfuscating in C. Luettavissa: https://yurisk.info/2017/06/25/binary-obfuscation-string-obfuscating-in-C/. Luettu: 30.01.2026.
