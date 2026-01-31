@@ -106,3 +106,52 @@ En loppujenlopuksi ole varma, kuinka hyvä ratkaisu tämä kokonaisuudessaan on,
 
 ## c) Packd
 
+Ajoin ohjelman `./packd` ja se kysyi salasanaa. Kokeilin `asdf123`, eikä se ollut oikein. Ohjelma tuntui toimivan samalla periaatteella kuin edellinen.
+Avasin binäärin strings:llä ja huomasin tekstissä salasanaan viittaavaa tekstiä:
+
+<img width="346" height="178" alt="image" src="https://github.com/user-attachments/assets/0482ee49-a537-4836-a6ff-3bfd1b05088f" />
+
+En uskonut, että tämä olisi koko salasana, mutta kokeilin sitä kuitenkin.
+
+<img width="527" height="105" alt="image" src="https://github.com/user-attachments/assets/f05df8b7-f78c-43f6-b814-009adbfc578d" />
+
+Olin oikeassa, salasana ei ollut oikein.
+
+Luin lisää strings:n tekstiä, ja huomasin kohdan `$Info: This file is packed with the UPX executable packer http://upx.sf.net $
+$Id: UPX 4.21 Copyright (C) 1996-2023 the UPX Team. All Rights Reserved. $`
+Ajattelin, olisiko tämä ohjelma samalla obfuskoinut koodin, kun se pakkasi ohjelman binääriksi?
+Päätin tutkia ohjelmaa lisää.
+UPX:n sivuilla (https://upx.github.io/) kerrottiin sen olevan 'executable file compressor', joka siis pakkaa binäärit pienempään kokoon.
+Pakkauksen takia strings ei saa kaikkea tekstiä näkyviin, joten seuraavaksi kokeilin purkaa paketin pakkaamattomaan muotoon.
+Kytkin internetyhteyden takaisin virtuaalikoneeseen ja asensin UPX:n (`sudo apt-get install upx`).
+
+<img width="509" height="290" alt="image" src="https://github.com/user-attachments/assets/7b208b54-5370-49af-96ba-6bdab8e57cc3" />
+
+Tarkistin vielä internetistä ohjeita ja huomasin tällä sivulla (https://greatbinary.win/article/unpacking-upx-packed-binaries/) `--backup` option, joka varmuuskopioi alkuperäisen pakatun paketin.
+Näin minun ei tarvitsisi ladata uudelleen pakettia, jos jotain menee pieleen.
+Kytkin internetin pois käytöstä ja purin paketin `upx -d -v --backup packd`.
+
+<img width="504" height="138" alt="image" src="https://github.com/user-attachments/assets/d160e557-9256-4c78-8ddc-29a91fa6cf42" />
+
+Nyt hakemistossa oli kaksi tiedostoa, `packd` ja `packd.~`.
+En tajunnut lisätä nimeä tiedostolle, joten tutkin `ls -la` komennolla, kumpi paketeista oli isompi tiedostokooltaan.
+
+<img width="368" height="87" alt="image" src="https://github.com/user-attachments/assets/38c6326d-d835-4188-a5b4-2122f97c6fd3" />
+
+`packd` oli suurempi, joten tutkin sitä strings:llä.
+Nyt binäärissä näkyi paljon enemmän ja paremmin selkokielistä tekstiä, ja löysinkin salasanan ja lipun.
+`piilos-AnAnAs` `FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}`
+
+<img width="451" height="65" alt="image" src="https://github.com/user-attachments/assets/58fc1dca-f485-49f3-a263-6c8982cedd1d" />
+
+Varmistin vielä, että salasana oli oikea.
+
+<img width="452" height="65" alt="image" src="https://github.com/user-attachments/assets/7f41a55d-5f3d-42a1-af44-cdeaf5a93848" />
+
+Salasana oli oikein ja lippu vastasi koodista löytynyttä.
+
+## Lähdeluettelo
+
+Kayaliev, L. 2025. Unpacking UPX-packed Binaries - Complete Guide. Luettaissa: https://greatbinary.win/article/unpacking-upx-packed-binaries/. Luettu: 31.01.2026.  
+Karvinen, T. 2026. Application hacking - 2026 Spring. Luettavissa: https://terokarvinen.com/application-hacking/#laksyt. Luettu: 31.01.2026.  
+Slobodyanyuk, Y. 2017. Binary obfuscation - String obfuscating in C. Luettavissa: https://yurisk.info/2017/06/25/binary-obfuscation-string-obfuscating-in-C/. Luettu: 30.01.2026.
