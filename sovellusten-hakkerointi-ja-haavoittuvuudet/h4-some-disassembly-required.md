@@ -137,4 +137,53 @@ Testasin myös oikean salasanan, ja ohjelma sanoi salasanan olevan väärä.
 
 <img width="406" height="135" alt="image" src="https://github.com/user-attachments/assets/db1a4dc3-23e8-4363-a189-46f466979864" />
 
-## d)
+## d) Nora CrackMe
+
+Menin tehtävänannossa annettuun GitHub linkkiin (https://github.com/NoraCodes/crackmes), ja latasin tiedostot "crackme01.c", "-01e.c", "-02.c" ja "makefile".
+Tämän jälkeen noudatin README:n ohjeita ja suoritin `make` komennon kaikille crackme tiedostoille.
+
+## e) Nora crackme01
+
+Käynnistin ohjelman `./crackme01.64` ja ohjelma tulosti "Need exactly one argument."
+Tutkin ohjelmaa ensin `strigs` komennolla.
+Huomasin tekstin "password1". Annoin tämän argumentiksi, kun käynnistin ohjelman uudelleen `./crackme01.64 password1`.
+Tämä antoi oikean vastauksen.
+
+<img width="524" height="88" alt="image" src="https://github.com/user-attachments/assets/06ad974b-abce-411f-a89d-8db92aa23874" />
+
+Avasin binäärin vielä Ghidrassa, ja tutkin main funktiota.
+
+```
+undefined4 main(int param_1,long param_2)
+
+{
+  char *__s1;
+  int iVar1;
+  undefined4 uVar2;
+  
+  if (param_1 == 2) {
+    __s1 = *(char **)(param_2 + 8);
+    iVar1 = strncmp(__s1,"password1",9);
+    if (iVar1 == 0) {
+      printf("Yes, %s is correct!\n",__s1);
+      uVar2 = 0;
+    }
+    else {
+      printf("No, %s is not correct.\n",__s1);
+      uVar2 = 1;
+    }
+  }
+  else {
+    puts("Need exactly one argument.");
+    uVar2 = 0xffffffff;
+  }
+  return uVar2;
+}
+```
+
+Main funktioon on lisätty `(int param_1,long param_2)`, jotka viittaavat ns. "Command-line argumentteihin" (https://www.geeksforgeeks.org/c/main-function-in-c/).
+Koodi palauttaa nollan, vain jos `param_2` on sama kuin teksti "password1".
+Ratkaisin tehtävän siis omasta mielestäni oikein.
+
+## e) Nora crackme01e
+
