@@ -46,7 +46,7 @@ Loin uuden projektin Ghidrassa ja lisäsin binäärin `packd.~`. Tämä on alkup
 Avasin binäärin CodeBrowserissa, annoin Ghidran analysoida binäärin oletusasetuksilla ja aloin tutkimaan sisältöä.
 Ghidra aloitti minut kohdasta "process entry", jonka päättelin olevan "main" funktio, sillä se on ohjelman ensimmäinen funktio.
 Kun aloin tutkia ohjelman sisältämiä stringejä (window, defined strings), ikkunassa ei näkynyt paljoa tekstiä.
-Huomasin sitten tekstin "00105870	$Info: This file is packed with the UPX executable packer http://upx.sf.net" ja muistin, että edellisessä tehtävässä pakkaus esti binäärin kunnollisen tutkimisen.
+Huomasin sitten tekstin `00105870	$Info: This file is packed with the UPX executable packer http://upx.sf.net` ja muistin, että edellisessä tehtävässä pakkaus esti binäärin kunnollisen tutkimisen.
 Niinpä suljin CodeBrowserin, lisäsin projektiin puretun binäärin ja avasin sen.
 Nyt tekstiä löytyi enemmän, mukaanlukien salasana ja lippu.
 Siirryin vasemman palkin "symbols" valikosta "funktions" kansioon, josta löysin "main" funktion. Ohjelma oli kai nimennyt sen valmiiksi, mutta se näytti oikealta.
@@ -84,8 +84,8 @@ Sen jälkeen ohjelma tulostaa tekstin "What's the password?" ja odottaa käyttä
 Tämän jälkeen ohjelma suorittaa funktion `strcmp`, jossa se vertaa kahta merkkijonoa keskenään.
 Funktio palauttaa luvun 0, jos merkkijonot ovat samat, tai positiivisen/negatiivisen luvun, jos merkkijonot eroavat (https://www.geeksforgeeks.org/c/strcmp-in-c/).
 Tämän funktion palautus tallennetaan aiemmin luotuun "vertaus_palautus" muuttujaan, jonka jälkeen siirrytään if-lauseeseen.
-If-lause tarkistaa, onko "vertaus_palautus" = 0, jonka jälkeen se tulostaa tekstin "Yes! That's the password. FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}" paljastaen lipun, jos luku oli 0.
-If-lause palauttaa tekstin "Sorry, no bonus.", jos "vertaus_palautus" ei ole 0.
+If-lause tarkistaa, onko `vertaus_palautus = 0`, jonka jälkeen se tulostaa tekstin "Yes! That's the password. FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}", paljastaen lipun, jos muuttujan arvo oli 0.
+If-lause palauttaa tekstin "Sorry, no bonus.", jos muuttujan arvo ei ole 0.
 Tämän jälkeen funktio palauttaa nollan, ja ohjelma sulkeutuu.
 
 ## c) If backwards
