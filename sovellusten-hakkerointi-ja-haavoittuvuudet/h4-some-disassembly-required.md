@@ -42,3 +42,51 @@ Siirryin kansioon `cd ghidra_12.0.2_PUBLIC/` ja avasin Ghidran komennolla `./ghi
 
 ## b) rever-C
 
+Loin uuden projektin Ghidrassa ja lisäsin binäärin `packd.~`. Tämä on alkuperäinen binääri edellisestä kotitehtävästä.
+Avasin binäärin CodeBrowserissa, annoin Ghidran analysoida binäärin oletusasetuksilla ja aloin tutkimaan sisältöä.
+Ghidra aloitti minut kohdasta "process entry", jonka päättelin olevan "main" funktio, sillä se on ohjelman ensimmäinen funktio.
+Kun aloin tutkia ohjelman sisältämiä stringejä (window, defined strings), ikkunassa ei näkynyt paljoa tekstiä.
+Huomasin sitten tekstin "00105870	$Info: This file is packed with the UPX executable packer http://upx.sf.net" ja muistin, että edellisessä tehtävässä pakkaus esti binäärin kunnollisen tutkimisen.
+Niinpä suljin CodeBrowserin, lisäsin projektiin puretun binäärin ja avasin sen.
+Nyt tekstiä löytyi enemmän, mukaanlukien salasana ja lippu.
+Siirryin vasemman palkin "symbols" valikosta "funktions" kansioon, josta löysin "main" funktion. Ohjelma oli kai nimennyt sen valmiiksi, mutta se näytti oikealta.
+Seuraavaksi annoin muuttujille kuvaavat nimet, `int iVar1 -> int vertaus_palautus` ja `char local_28 -> käyttäjän_syöte`.
+
+<img width="205" height="86" alt="image" src="https://github.com/user-attachments/assets/15dd2ab0-aaaf-42b6-9ff9-80c58081a9fc" />
+
+### Koodin toiminta
+
+Main funktio kokonaisuudessaan:
+
+```
+undefined8 main(void)
+
+{
+  int vertaus_palautus;
+  char käyttäjän_syöte [32];
+  
+  puts("What\'s the password?");
+  __isoc99_scanf(&DAT_0010201d,käyttäjän_syöte);
+  vertaus_palautus = strcmp(käyttäjän_syöte,"piilos-AnAnAs");
+  if (vertaus_palautus == 0) {
+    puts("Yes! That\'s the password. FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}");
+  }
+  else {
+    puts("Sorry, no bonus.");
+  }
+  return 0;
+}
+```
+
+Aluksi ohjelma luo kaksi muuttujaa, kokonaisluvun "vertaus_palautus", johon myöhemmin tallennetaan merkkijonojen vertailun tulos, sekä merkkijonon "käyttäjän_syöte".
+Merkkijonoon mahtuu 32 merkkiä, ja tähän tallennetaan käyttäjän syöttämä salasana.
+Sen jälkeen ohjelma tulostaa tekstin "What's the password?" ja odottaa käyttäjän syötettä.
+Tämän jälkeen ohjelma suorittaa funktion `strcmp`, jossa se vertaa kahta merkkijonoa keskenään.
+Funktio palauttaa luvun 0, jos merkkijonot ovat samat, tai positiivisen/negatiivisen luvun, jos merkkijonot eroavat (https://www.geeksforgeeks.org/c/strcmp-in-c/).
+Tämän funktion palautus tallennetaan aiemmin luotuun "vertaus_palautus" muuttujaan, jonka jälkeen siirrytään if-lauseeseen.
+If-lause tarkistaa, onko "vertaus_palautus" = 0, jonka jälkeen se tulostaa tekstin "Yes! That's the password. FLAG{Tero-0e3bed0a89d8851da933c64fefad4ff2}" paljastaen lipun, jos luku oli 0.
+If-lause palauttaa tekstin "Sorry, no bonus.", jos "vertaus_palautus" ei ole 0.
+Tämän jälkeen funktio palauttaa nollan, ja ohjelma sulkeutuu.
+
+## c) If backwards
+
