@@ -187,3 +187,108 @@ Ratkaisin tehtävän siis omasta mielestäni oikein.
 
 ## e) Nora crackme01e
 
+Käynnistin crackme01e ohjelman `./crackme01e.64` ja ohjelma tulosti saman tekstin kuin edellinen, "Need exactly one argument.".
+Tutkin myös tätä ohjelmaa `strings` komennolla, mutta tällä kertaa en huomannut mitään oikeaan argumenttiin viittaavaa tekstiä.
+Avasin binäärin Ghidrassa ja analysoin sen oletusasetuksilla.
+Aloin tutkimaan main funktiota, joka oli lähes samanlainen kuin edellisessä ohjelmassa.
+Näin kuitenkin merkkijonojen vertailussa tekstin, johon annettua argumenttia verrattiin:
+`iVar1 = strncmp(__s1,"slm!paas.k",10);`.
+Päätin kokeilla "slm!paas.k" argumenttina ohjelman käynnistyksessä, mutta bash kohtasi jonkinlaisen ongelman.
+
+<img width="548" height="68" alt="image" src="https://github.com/user-attachments/assets/f48f74b3-8217-4e0a-b452-d39811f0792c" />
+
+Seuraavaksi koetin samaa argumenttia, mutta heittomerkeillä `./crackme01e.64 "slm!paas.k"`, mutta kohtasin saman virheen.
+Etsin internetistä mikä on "bash event not found", ja löysin vastauksen Stackoverflow:sta (https://stackoverflow.com/a/11816138).
+Kirjoitin terminaaliin `set +H` ja ajoin sen jälkeen edellisen komennon uudelleen. Nyt sain oikean vastauksen.
+Salasana toimi myös ilman heittomerkkejä.
+
+<img width="566" height="112" alt="image" src="https://github.com/user-attachments/assets/122a17c2-dae5-42b2-9ea5-f6631831563c" />
+
+Tutkin binääriä vielä uudelleen `strings` komennon avulla, tarkistaakseni oliko salasana näkyvissä siellä.
+Salasana oli näkyvissä, mutta en ollut tajunnut sitä salasanaksi, sillä se ei ollut niin yksiselitteinen.
+
+<img width="297" height="94" alt="image" src="https://github.com/user-attachments/assets/e19c198f-1ad3-45bf-a052-3ced0677da3a" />
+
+## f) Nora crackme02
+
+Käynnistin crackme02.64 ohjelman `./crackme02.64`, ja ohjelma tulosti saman tekstin kuin kaksi edellistä.
+Tutkin binääriä taas `strings` avulla. Huomasin taas tekstin "password1", ja kokeilin sitä argumentiksi.
+Ohjelma vastasi salasanan olevan väärä.
+
+<img width="532" height="73" alt="image" src="https://github.com/user-attachments/assets/6ca38fd3-4d13-4509-8efd-53c69d02f717" />
+
+Tämän jälkeen avasin binäärin Ghidrassa ja analysoin sen oletusasetuksilla.
+Tutkin jälleen main funktiota:
+
+```
+undefined8 main(int param_1,long param_2)
+
+{
+  char cVar1;
+  char cVar2;
+  undefined8 uVar3;
+  long lVar4;
+  
+  if (param_1 == 2) {
+    cVar2 = 'p';
+    lVar4 = 0;
+    do {
+      cVar1 = *(char *)(*(long *)(param_2 + 8) + lVar4);
+      if (cVar1 == '\0') break;
+      if (cVar2 + -1 != (int)cVar1) {
+        printf("No, %s is not correct.\n");
+        return 1;
+      }
+      cVar2 = "password1"[lVar4 + 1];
+      lVar4 = lVar4 + 1;
+    } while (cVar2 != '\0');
+    printf("Yes, %s is correct!\n");
+    uVar3 = 0;
+  }
+  else {
+    puts("Need exactly one argument.");
+    uVar3 = 0xffffffff;
+  }
+  return uVar3;
+}
+```
+
+Tutkiskelin koodia ja huomasin, että ohjelma käy `do` silmukassa läpi "password1" sanan kirjaimet indeksi kerrallaan, kunhan sen viimeinen merkki ei ole `\0` eli NULL character.
+Null character on jokaisen merkkijonon viimeinen merkki, vaikka sitä ei näekään (https://www.geeksforgeeks.org/c/difference-between-null-pointer-null-character-0-and-0-in-c-with-examples/).
+En onnistunut pitkän miettimisen ja tutkimisen jälkeen ymmärtämään, miten `cVar1 = *(char *)(*(long *)(param_2 + 8) + lVar4);` toimii, mutta se taisi olla vain hämäystä.
+Aloin miettimään do-silmukan seuraavaa vaihetta `if (cVar2 + -1 != (int)cVar1) {`.
+Jos ymmärsin oikein, `cVar2 + -1` viittaa indeksiin -1 merkkijonossa cVar2. Tämä siis tarkottaisi merkkijonon viimeistä merkkiä.
+Ajattelin, jos ohjelma haluaakin salasanan takaperin, mutta se ei ollut oikein.
+Kokeilun jälkeen mietin, että `if (cVar2 + -1 != (int)cVar1) {` vertaisikin, onko cVar2 indeksin -1 eri, kuin cVar1 kokonaisluvuksi muutettuna.
+Mutta cVar2 sisältää vain yhden merkin, eikä -1 ole indeksin osoittajana.
+Sitten ajattelin, jos -1 poistaakin cVar2 muuttujasta yhden muuttujan, ensimmäisellä kierroksella siis merkin "p".
+Täten muuttuja olisi tyhjä merkkijono, jota verrataan cVar1 muuttujaan, ja if-lause toteutuu, jos molemmat eivät ole tyhjiä.
+Kokeilin sen jälkeen tyhjää argumenttia käynnistäessäni ohjelmaa, mutta pelkkä välilyönti ei käynyt.
+Kokeilin laittaa kaksi hipsukkaa komentoon `./crackme02.64 ''`.
+
+<img width="444" height="60" alt="image" src="https://github.com/user-attachments/assets/519567c2-be10-4ae2-a492-e15470f9dcd7" />
+
+Tämä oli oikea vastaus! En ole itsekään täysin varma, miten onnistuin päätymään tähän ratkaisuun, mutta ainakin ohjelma itse sanoo sen olevan oikein.
+
+![Falling up the stairs](https://media1.tenor.com/m/hNj08SF198wAAAAd/cartoons.gif)
+
+Lopuksi muutin Ghidrassa muuttujien ja funktioiden nimet paremmin luettaviksi.
+
+<img width="435" height="484" alt="image" src="https://github.com/user-attachments/assets/5958617c-aa5f-4abe-ba27-267d08f477dd" />
+
+## Lähdeluettelo
+
+Faulty Logic. 2019. Editing an Executable Binary File with Ghidra. Luettavissa: https://blog.cjearls.io/2019/04/editing-executable-binary-file-with.html. Luettu: 07.02.2026.  
+GeeksForGeeks a. 2025. C strcmp(). Luettavissa: https://www.geeksforgeeks.org/c/strcmp-in-c/. Luettu: 07.02.2026.  
+GeeksForGeeks b. 2025. main Function in C. Luettavissa: https://www.geeksforgeeks.org/c/main-function-in-c/. Luettu: 07.02.2026.  
+GeeksForGeeks c. 2025. Difference between NULL pointer, Null character ('\0') and '0' in C with Examples. Luettavissa: https://www.geeksforgeeks.org/c/difference-between-null-pointer-null-character-0-and-0-in-c-with-examples/. Luettu: 07.02.2026.  
+Ghidra. 2025. Ghidra Software Reverse Engineering Framework. Luettavissa: https://github.com/NationalSecurityAgency/ghidra/tree/master. Luettu: 07.02.2026.  
+Hammond, J. 2022. GHIDRA for Reverse Engineering (PicoCTF 2022 #42 'bbbloat'). Katsottavissa: https://www.youtube.com/watch?v=oTD_ki86c9I. Katsottu: 06.02.2026.  
+Karvinen, T. 2026. Application hacking - 2026 Spring. Luettavissa: https://terokarvinen.com/application-hacking/#laksyt. Luettu: 07.02.2026.  
+Li, V. 2020. Patching Binaries With Ghidra. Luettavissa: https://materials.rangeforce.com/tutorial/2020/04/12/Patching-Binaries/. Luettu: 07.02.2026.  
+OpenJDK. s.a. OpenJDK. Luettavissa: https://openjdk.org/. Luettu: 07.02.2026.  
+Stackoverflow. 2022. echo "#!" fails -- "event not found". Luettavissa: https://stackoverflow.com/a/11816138. Luettu: 07.02.2026.  
+Stackoverflow. 2017. Is there a way to add an animated GIF to a Markdown file? Luettavissa: https://stackoverflow.com/a/42366350. Luettu: 07.02.2026.  
+Tindall, L. 2019. Some Crackmes. Luettavissa: https://github.com/NoraCodes/crackmes. Luettu: 07.02.2026.
+
+GIF: https://media1.tenor.com/m/hNj08SF198wAAAAd/cartoons.gif.
