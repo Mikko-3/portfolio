@@ -107,8 +107,10 @@ Tämän jälkeen tutkin koodin toimintaa, ja huomasin if-lauseen, jossa tarkiste
 Koska `strcmp` palauttaa luvun 0, jos merkkijonot ovat samat, voi logiikkaa muuttaa vaihtamalla if-lauseen vertailun muotoon `!=0`.
 Näin lause on tosi, jos luku ei ole 0, joten ohjelma hyväksyy kaikki salasanat, paitsi oikean.  
 Seuraavaksi luin eteenpäin ohjeesta, miten voin muuttaa koodia.
-Kokeilin ohjeessa kuvailtua "patch instruction" optiota, mutta ghidra ei jostain syystä halunnut minun antaa muokata arvoja, vaikka koetin sitä monta kertaa.
+Kokeilin ohjeessa kuvailtua "patch instruction" optiota, mutta Ghidra ei jostain syystä halunnut minun antaa muokata arvoja, vaikka koetin sitä monta kertaa.
 En onnistunut löytämään ongelmaan ratkaisua internetistä, mutta tämän jälkeen kun kokeilin uudelleen, muokkaaminen toimi.
+En keksinyt tähän mitään syytä, ehkä odottaminen oli jostain syystä tarpeellista.
+
 Nyt minun piti selvittää, mitä arvoa minun piti muuttaa ja miksi se pitäisi muuttaa.
 Löysin sivuston, jolla kerrottiin Assemblyn yleisimpiä instructioneita (https://materials.rangeforce.com/tutorial/2020/04/12/Patching-Binaries/).
 Huomasin, että if-lauseen kohdalla oli `JZN` instruction, joka tarkoitti "jump if nonzero".
@@ -124,7 +126,7 @@ Jälkeen:
 
 <img width="946" height="162" alt="image" src="https://github.com/user-attachments/assets/4f10d5ae-4d66-4bab-85c2-9a3564cd4e24" />
 
-Tämän jälkeen siirryin tallensin ohjelman `ctrl+s` ja exportasin sen `o` (https://blog.cjearls.io/2019/04/editing-executable-binary-file-with.html).
+Tämän jälkeen tallensin ohjelman `ctrl+s` ja exportasin sen `o` (https://blog.cjearls.io/2019/04/editing-executable-binary-file-with.html).
 Valitsin formaatiksi "original file" ja nimesin ohjelman "passtr_muokattu".
 Tämän jälkeen siirryin kotihakemistooni terminaalissa, lisäsin suoritusoikeudet ohjelmaan `chmod +x passtr_muokattu` komennolla ja suoritin ohjelman.
 Ohjelma avautui onnistuneesti ja kun kirjoitin väärän salasanan, ohjelma tulosti salasanan olevan oikein.
