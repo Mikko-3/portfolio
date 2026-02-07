@@ -90,3 +90,49 @@ Tämän jälkeen funktio palauttaa nollan, ja ohjelma sulkeutuu.
 
 ## c) If backwards
 
+Löysin internetistä ohjeen, jota seurasin tämän tehtävän tekemisessä (https://blog.cjearls.io/2019/04/editing-executable-binary-file-with.html).
+Avasin uuden projektin Ghidrassa, lisäsin `passtr` ohjelman.
+Valitsin ohjeen mukaan valinnan "raw binary", mutta en tiennyt mikä kieli minun olisi pitänyt valita.
+Menin takaisin terminaaliin ja luin tietoja ohjelmasta `strings` komennolla.
+Sieltä näin, että ohjelma oli 64 bittinen ja compilettu GCC:llä.
+
+<img width="405" height="553" alt="image" src="https://github.com/user-attachments/assets/695732c6-7270-45fd-be00-16c7ea11941d" />
+
+Etsin "language" kohdasta "gcc" ja valitsin 64 bittisen version.
+Avasin binäärin ja analysoin sen oletusasetuksilla.
+
+Etsin main funktion, tässä tapauksessa nimeltä `FUN_00001159` ja siirryin siihen.
+Nimesin funktion uudelleen nimelle `main` tehdäkseni nimestä helppolukuisemman.
+Tämän jälkeen tutkin koodin toimintaa, ja huomasin if-lauseen, jossa tarkistetaan onko muuttujan arvo 0.
+Koska `strcmp` palauttaa luvun 0, jos merkkijonot ovat samat, voi logiikkaa muuttaa vaihtamalla if-lauseen vertailun muotoon `!=0`.
+Näin lause on tosi, jos luku ei ole 0, joten ohjelma hyväksyy kaikki salasanat, paitsi oikean.  
+Seuraavaksi luin eteenpäin ohjeesta, miten voin muuttaa koodia.
+Kokeilin ohjeessa kuvailtua "patch instruction" optiota, mutta ghidra ei jostain syystä halunnut minun antaa muokata arvoja, vaikka koetin sitä monta kertaa.
+En onnistunut löytämään ongelmaan ratkaisua internetistä, mutta tämän jälkeen kun kokeilin uudelleen, muokkaaminen toimi.
+Nyt minun piti selvittää, mitä arvoa minun piti muuttaa ja miksi se pitäisi muuttaa.
+Löysin sivuston, jolla kerrottiin Assemblyn yleisimpiä instructioneita (https://materials.rangeforce.com/tutorial/2020/04/12/Patching-Binaries/).
+Huomasin, että if-lauseen kohdalla oli `JZN` instruction, joka tarkoitti "jump if nonzero".
+Tämä oli siis kohta, jossa verrattiin `strcmp` palauttamaa arvoa nollaan. Jos arvo ei ollut nolla, ohjelma "hyppää" seuraavaan kohtaan.
+Vaihdoin `JZN` instructionin `JZ` instructioniksi, jolloin if-lauseke toimii päinvastoin, "hypäten" jos arvo on nolla.
+Myös decompiler näkymässä koodi muuttui vastaavanlaiseksi, kun poistuin muokkaamisesta.
+
+Ennen:
+
+<img width="948" height="159" alt="image" src="https://github.com/user-attachments/assets/acbc3c0c-8b10-4573-b6f5-13b067d33691" />
+
+Jälkeen:
+
+<img width="946" height="162" alt="image" src="https://github.com/user-attachments/assets/4f10d5ae-4d66-4bab-85c2-9a3564cd4e24" />
+
+Tämän jälkeen siirryin tallensin ohjelman `ctrl+s` ja exportasin sen `o` (https://blog.cjearls.io/2019/04/editing-executable-binary-file-with.html).
+Valitsin formaatiksi "original file" ja nimesin ohjelman "passtr_muokattu".
+Tämän jälkeen siirryin kotihakemistooni terminaalissa, lisäsin suoritusoikeudet ohjelmaan `chmod +x passtr_muokattu` komennolla ja suoritin ohjelman.
+Ohjelma avautui onnistuneesti ja kun kirjoitin väärän salasanan, ohjelma tulosti salasanan olevan oikein.
+
+<img width="904" height="125" alt="image" src="https://github.com/user-attachments/assets/a3d7f0bf-2d2d-45b8-980b-ddeb2388b8a5" />
+
+Testasin myös oikean salasanan, ja ohjelma sanoi salasanan olevan väärä.
+
+<img width="406" height="135" alt="image" src="https://github.com/user-attachments/assets/db1a4dc3-23e8-4363-a189-46f466979864" />
+
+## d)
