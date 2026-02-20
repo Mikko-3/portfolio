@@ -79,3 +79,67 @@ Lopputulokseksi tuli 120, joka oli oikein, tarkistettuani laskutoimituksen laski
 <img width="596" height="323" alt="image" src="https://github.com/user-attachments/assets/d964da0a-325b-4a6d-b5fc-a8327bac128a" />
 
 ## Lab 0
+
+Purin kansion ja ajoin ohjelman "buggy_program".
+Ohjelma tulosti elementtien arvoja.
+
+<img width="170" height="154" alt="image" src="https://github.com/user-attachments/assets/90b4c9af-b728-4b24-bfb1-629d4bfa6d33" />
+
+Koska lähdekoodi oli saatavilla, käänsin sen uudelleen debug tiedoilla.
+Ohjelma oli kirjoitettu C-kielellä, joten käänsin sen käyttäen GCC:tä `gcc buggy_program.c -g -o buggy_program_dbg`.
+G-optio lisää debug tiedot ohjelmaan (GCC, s.a.).
+Tämän jälkeen avasin ohjelman GNU Debuggerissa komennolla `gdb ./buggy_program_dbg`.
+Loin keskeytyspisteen `break main` ja ajoin ohjelman `run`.
+Kävin askel askeleelta ohjelman toiminnan läpi.
+Ohjelma tulostaa elementtejä 0-5 ja arvot numbers-muuttujasta (array).
+
+<img width="1134" height="334" alt="image" src="https://github.com/user-attachments/assets/d92fe769-dfdf-4a7b-b81d-f0667dc67a65" />
+
+Debug tietojen avulla, myös kommentit näkyvät koodissa.
+Viimeisessä elementissä, kun i:n arvo on 5, ei numbers arrayssa ole sillä indeksillä dataa, joten ohjelma tulostaa arvoksi 0.
+Kommentteja hyödyntäen, ajattelin, että tarkoitus olisi tulostaa vain numbers arrayn arvot, eli elementit 0-4.
+Kun size muuttujalle annetaan koko 5, joka on kommentin mukaan väärä, voisi ohjelman korjata muuttamalla size:n arvoksi 4.
+Näin ohjelma tulostaisi indeksit 0-4, joissa arvot sijaitsevat.
+Korjasin arvon lähdekoodiin ja käänsin ohjelman uudelleen ``.
+
+Alkuperäinen lähdekoodi:
+
+```
+#include <stdio.h>
+
+void buggy_function(int *arr, int size) {
+    for (int i = 0; i <= size; i++) { // Huomaa: <= aiheuttaa puskuriylivuodon
+        printf("Element %d: %d\n", i, arr[i]);
+    }
+}
+
+int main() {
+    int numbers[] = {1, 2, 3, 4, 5};
+    buggy_function(numbers, 5); // Virheellinen koko
+    return 0;
+}
+```
+
+Muutettu arvo funktiokutsuun:
+
+```
+int main() {
+    int numbers[] = {1, 2, 3, 4, 5};
+    buggy_function(numbers, 4); // Vaihdettu arvoksi suurin indeksi (0-4)
+    return 0;
+}
+```
+
+Nyt ohjelma tulostaa kaikki arvot numbers muuttujasta:
+
+<img width="736" height="153" alt="image" src="https://github.com/user-attachments/assets/a544f5c9-9722-4275-add0-649e4456106f" />
+
+Nyt ohjelma toimii mielestäni oikein.
+
+## Lab 1
+
+
+
+## Lähdeluettelo
+
+https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
