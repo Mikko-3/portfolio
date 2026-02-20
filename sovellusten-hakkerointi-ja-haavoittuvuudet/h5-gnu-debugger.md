@@ -15,6 +15,11 @@ Tämän jälkeen suoritin ohjelman komennolla `run` ja kävin ohjelman toiminnan
 Kun ohjelma asetti muuttujia, suoritin komennon `watch (muuttujan nimi)` seuratakseni muuttujien arvoa.
 Kuten ohjeessa mainittiin, factorial -funktion logiikassa on virhe, jossa n-muuttujan arvoa vähennetään jo while silmukan alussa.
 Tämä johtaa siihen, ettei laskutoimitusta suoriteta aluksi alkuperäisellä arvolla, vaan arvo -1 ja lopussa muuttujan arvo on 0, joten kertolaskun tulos on aina 0.
+
+<img width="401" height="505" alt="image" src="https://github.com/user-attachments/assets/cc352e56-50ba-4031-a761-2814fb6c6680" />
+
+<img width="412" height="293" alt="image" src="https://github.com/user-attachments/assets/c6fe12e9-17ea-415a-a677-673dc7e1f8ba" />
+
 Korjasin silmukan logiikan lähdekoodissa ja käänsin ohjelman uudelleen.
 
 Alkuperäinen lähdekoodi:
@@ -63,3 +68,14 @@ long factorial(int n)
 ```
 
 Nyt n-muuttujaa vähennetään vasta silmukan lopussa, eikä tulosta kerrota nollalla.
+Testasin ohjelman toiminnan varmistaakseni, että olin korjannut ongelman.
+Syötin n-muuttujan arvoksi 5.
+
+<img width="713" height="687" alt="image" src="https://github.com/user-attachments/assets/afed34b9-647b-411e-aff3-3405b6fc3a2e" />
+
+Nyt result-muuttuja kerrotaan ensimmäisellä kierroksella arvolla 5, joten se osa ohjelmasta toimii oikein.
+Lopputulokseksi tuli 120, joka oli oikein, tarkistettuani laskutoimituksen laskimella.
+
+<img width="596" height="323" alt="image" src="https://github.com/user-attachments/assets/d964da0a-325b-4a6d-b5fc-a8327bac128a" />
+
+## Lab 0
