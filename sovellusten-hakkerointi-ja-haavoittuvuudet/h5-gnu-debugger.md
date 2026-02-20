@@ -96,11 +96,11 @@ Ohjelma tulostaa elementtejä 0-5 ja arvot numbers-muuttujasta (array).
 <img width="1134" height="334" alt="image" src="https://github.com/user-attachments/assets/d92fe769-dfdf-4a7b-b81d-f0667dc67a65" />
 
 Debug tietojen avulla, myös kommentit näkyvät koodissa.
-Viimeisessä elementissä, kun i:n arvo on 5, ei numbers arrayssa ole sillä indeksillä dataa, joten ohjelma tulostaa arvoksi 0.
-Kommentteja hyödyntäen, ajattelin, että tarkoitus olisi tulostaa vain numbers arrayn arvot, eli elementit 0-4.
-Kun size muuttujalle annetaan koko 5, joka on kommentin mukaan väärä, voisi ohjelman korjata muuttamalla size:n arvoksi 4.
-Näin ohjelma tulostaisi indeksit 0-4, joissa arvot sijaitsevat.
-Korjasin arvon lähdekoodiin ja käänsin ohjelman uudelleen ``.
+Viimeisessä elementissä, kun i:n arvo on 5, ei numbers-muuttujassa ole sillä indeksillä dataa, joten ohjelma tulostaa arvoksi 0.
+Kommentteja hyödyntäen, ajattelin, että tarkoitus olisi tulostaa vain numbers-muuttujan arvot, eli elementit 0-4.
+Kun size-muuttujalle annetaan koko 5, joka on kommentin mukaan väärä, voisi ohjelman korjata muuttamalla size:n arvoksi 4.
+Näin ohjelma tulostaisi vain indeksit 0-4, joissa arvot sijaitsevat.
+Korjasin arvon lähdekoodiin ja käänsin ohjelman uudelleen `gcc buggy_program_fix.c -g -o buggy_program_fix_dbg`.
 
 Alkuperäinen lähdekoodi:
 
@@ -130,7 +130,7 @@ int main() {
 }
 ```
 
-Nyt ohjelma tulostaa kaikki arvot numbers muuttujasta:
+Nyt ohjelma tulostaa vain arvot numbers-muuttujasta:
 
 <img width="736" height="153" alt="image" src="https://github.com/user-attachments/assets/a544f5c9-9722-4275-add0-649e4456106f" />
 
