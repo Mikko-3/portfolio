@@ -160,7 +160,7 @@ Lopputuloksena on tulostettu teksti `Khoor/#zruog1`, joka muodostuu, kun tekstin
 Sen jälkeen ohjelma kutsuu samaa funktiota uudelleen muuttujalla `bad_message`.
 Tämän jälkeen ohjelma kohtaa virheen `SIGSEGV` eli segmentation fault ja sulkeutuu.
 Virhe liittyi selvästi `bad_message` muuttujaan, sillä funktio toimi toisella muuttujalla ongelmitta.
-Tutkin aikaisemmin löytämääni tietoa segmentation faultista ja huomasin kohdan "A common way to get a segfault is to dereference a null pointer:" (Stackoverflow 2020).
+Tutkin aikaisemmin löytämääni tietoa segmentation faultista ja huomasin kohdan "A common way to get a segfault is to dereference a null pointer:" (Stackoverflow a. 2020).
 Koska `bad_message` muuttujan arvo on `NULL`, tutkin lisää "dereference a null pointer" hakusanoilla.
 Löysin toisen Stackoverflow ketjun aiheesta, ja yhdessä vastauksessa selitettiin miksi tämä tuottaa segmentation faultin:
 
@@ -231,10 +231,55 @@ En jäänyt tutkimaan asiaa sen enempää ja siirryin seuraavaan tehtävään.
 
 ## Lab 2
 
+Purin kansion "lab2.zip" ja avasin README.md tiedoston.
+Tehtävän tarkoituksena on löytää lippu "passtr2o" ohjelmasta käyttäen debuggeria.
+Passtr2o ohjelmaan ei ole saatavilla lähdekoodia, joten avasin ohjelman suoraan debuggerissa `dbg ./passtr2o`.
+Loin breakpointin ja aloin tutkimaan ohjelman toimintaa.
+Ilman debug tietoja, debugger ei näyttänyt kuin ohjelman tulostaman tekstin.
 
+<img width="965" height="412" alt="image" src="https://github.com/user-attachments/assets/1feb9902-f4a8-498c-a8da-e7cf92a3ac1a" />
+
+Annoin gdb:lle komennon `layout asm`, jolloin sain näkyviin assembler koodin.
+Tutkin koodista, näkyisikö siellä salasanaa tai lippua, mutta en löytänyt kumpaakaan.
+
+Tutkin internetistä, miten debugata ilman lähdekoodia, ja löysin ohjeita Stackexchange ketjusta (Stackexchange 2023).
+Annoin gdb:lle komennon `set disassembly-flavor intel` vaihtaakseni assembler koodin hieman helpommin luettavaan muotoon.
+Annoin myös komennon `set disassemble-next-line on` jotta gdb kertoo tekstinä, missä kohdassa koodia se menee.
+Kävin koodia läpi `ni` komennolla.
+Ohjelma jäi useaksi stepiksi kohtaan `main+62`, jossa oletan että ohjelma teki jotain useamman kerran.
+
+<img width="1033" height="32" alt="image" src="https://github.com/user-attachments/assets/c4092bdb-1188-4ecc-974b-558efc2b0def" />
+
+Hain tietoa `rep movs` ohjeista ja sain selville, että `rep` toistaa operaation ja `movs` kopioi dataa kohdasta `es:[rdi]` kohtaan `ds:[rsi]`(Stackoverflow b. 2020).
+En vielä täysin ymmärtänyt mitä tämä tarkoitti, mutta jatkoin tutkimista.
+Myöhemmin ohjelma kutsuu `puts` funktiota, joka tulostaa tekstin "What's the password?".
+Tämän jälkeen kutsutaan `scanf` funktiota, joka odottaa käyttäjän syötettä ja oletettavasti tallentaa sen muuttujaan.
+Sitten ohjelma kutsuu funktiota `mAsdf3a`, jossa suoritetaan `dec` ohje, joka vähentää yhden muuttujasta `eax`(felixcloutier.com 2023).
+Tämän jälkeen tehdään `xor` vertailua, jonka tuloksena hypätään seuraavaan kohtaan, jos tulos ei ole yhtä suuri (`jne`).
+Kirjoittamani salasanan (testi) johdosta, ohjelma hyppää ulos vertailusta, ja kutsuu `printf` funktiota, joka tulostaa tekstin "Sorry, no bonus.".
+Salasana oli siis väärä.
+
+En tiedä ymmärsinkö ohjelman toimintaperiaatteen oikein, mutta itseä kiinnosti alun `rep movs`, joka kopioi jotain dataa paikasta toiseen.
+Ajattelin, olisiko tämä salasana, joka on obfuskoitu?
+Jos saisin muistin sisällön tietoon, kun ohjelma suorittaa funktiota, voisin saada salasanan selville ja saada lipun ohjelmasta.
+Koetin lukea muistin sisältöä `x/` komennolla, mutta en saanut ulos mitään, mikä olisi vastannut kirjainta tai merkkiä.
+
+<img width="1270" height="133" alt="image" src="https://github.com/user-attachments/assets/daa7e844-2753-4992-ae42-251d5f31ae4d" />
+
+Löysin internetistä sivun, jolla kerrottiin C-kielen käyttävän oletuksena UTF-16 merkistöä, jos ajaa komennon `s` formaatilla (Sourceware s.a.).
+Suoritin komennon `x/s $rsi`, mutta tuloksena oli vain sekasotkua, josta ei UTF-16 merkistöstä löytynyt mitään.
+
+En lopuksi keksinyt enää keinoja selvittää salasanaa ohjelmasta, joten luovutin tehtävän tekemisen.
+Voi olla, että olin oikeilla jäljillä etsiessäni salasanaa `rep movs` kohdasta, mutta on myös hyvin mahdollista, etten ollut lähimaillakaan oikeaa ratkaisua.
+¯\_(ツ)_/¯
 
 ## Lähdeluettelo
 
-https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
-https://stackoverflow.com/a/2346849
-2022 https://stackoverflow.com/a/4009070
+Felixcloutier.com 2023. DEC — Decrement by 1. Luettavissa: https://www.felixcloutier.com/x86/dec. Luettu: 21.02.2026.  
+GCC s.a. 3.11 Options for Debugging Your Program. Luettavissa: https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html. Luettu: 21.02.2026.  
+Iso-Anttila, L. & Karvinen, T. s.a. GNU Debugger. Sovellusten hakkerointi ja haavoittuvuudet -opintojakson tehtävänanto Moodlessa. Haaga-Helia ammattikorkeakoulu. Luettu: 21.02.2026.  
+Stackexchange 2023. How to handle stripped binaries with GDB? No source, no symbols and GDB only shows addresses? Luettavissa: https://reverseengineering.stackexchange.com/a/1936. Luettu: 21.02.2026.  
+Stackoverflow 2022. What exactly is meant by "dereferencing a NULL pointer"?. Luettavissa: https://stackoverflow.com/a/4009070. Luettu: 21.02.2026.  
+Stackoverflow a. 2020. What is a segmentation fault?. Luettavissa: https://stackoverflow.com/a/2346849. Luettu: 21.02.2026.  
+Stackoverflow b. 2020. Assembly: REP MOVS mechanism. Luettavissa: https://stackoverflow.com/a/27804935. Luettu: 21.02.2026.  
+Sourceware s.a. 10.6 Examining Memory. https://sourceware.org/gdb/current/onlinedocs/gdb.html/Memory.html. Luettu: 21.02.2026.
