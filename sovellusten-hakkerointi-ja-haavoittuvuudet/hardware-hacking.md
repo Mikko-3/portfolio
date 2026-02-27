@@ -65,3 +65,24 @@ Ajoin komennon `./tp-link-decrypt/bin/tp-link-decrypt Tapo_C200v4_en_1.4.2.bin` 
 
 ## Analyse the image file
 
+Aloin miettiä, miten analysoisin tiedostoa.
+Koska tiedosto oli image kameran firmwaresta, ajattelin, että jos mounttaan imagen, pääsen tutkimaan tiedostoja.
+Etsimisen jälkeen kuitenkin löysin, ettei .bin tiedostoja voi suoraan mountata (https://www.networkinghowtos.com/howto/mounting-bin-cue-files-on-linux/).
+Jatkoin etsimistä, miten analysoida .bin tiedostoa, ja törmäsin artikkeliin "binwalk: A tool for analyzing and extracting data from firmware images"(https://awjunaid.com/kali-linux/binwalk-a-tool-for-analyzing-and-extracting-data-from-firmware-images/).
+Olin asentanut binwalk jo aikaisemmin, joten tutkin, millä komennoilla voisin tutkia tiedostoa.
+Ajoin komennon `binwalk Tapo_C200v4_en_1.4.2.bin.dec |less` nähdäkseni tietoja tiedostosta, ja kiinnitin huomioni `squashfs filesystem` kohtaan.
+
+<img width="1265" height="96" alt="image" src="https://github.com/user-attachments/assets/87a2d947-8d92-4099-a04e-0475f40de460" />
+
+Tämä sisältäisi varmaankin järjestelmätiedostot.
+Tein uuden hakemiston tiedostoja varten `mkdir extract` ja ajoin komennon `binwalk -e --directory=extract Tapo_C200v4_en_1.4.2.bin.dec`.
+Tämä extractasi tiedostot kyseiseen hakemistoon.
+Siirryin hakemistoon ja listasin tiedostot `ls -la`.
+Hakemistossa oli paljon pakattuja tiedostoja, mutta myös `squashfs-root` hakemisto.
+Siirryin siihen, ja löysin linuxin hakemistoja:
+
+<img width="699" height="204" alt="image" src="https://github.com/user-attachments/assets/f83b5b17-125d-44a9-a051-4c370b875a07" />
+
+## Extract rootfs from the dump file
+
+Toistin edellämainitun operaation binwalkilla dump tiedostolle `binwalk -e --directory=extract_dump/ dump-tapo-c200v3-1.4.2.bin`.
