@@ -1,16 +1,16 @@
 # Hardware hacking
 
-Tehtävänanto löytyy kurssin Moodle sivulta, välilehdeltä Hardware hacking.
+Tehtävänanto löytyy kurssin Moodle sivulta, välilehdeltä Hardware hacking (Iso-Anttila & Karvinen s.a.).
 
 ## Ohjelmistojen ja tiedostojen lataus
 
 Avasin Moodlesta ohjeet välilehdeltä Hardware hacking.
-Avasin linkatun GitHub repositorion ja kloonasin sen virtuaalikoneelleni `git clone`.
+Avasin linkatun GitHub repositorion (Robbins 2025) ja kloonasin sen virtuaalikoneelleni `git clone`.
 
 Koitin ensin ladata TapoV3 -binääriä Moodlen komennolla, mutta bash ei tunnistanut komentoa.
-Hain tietoa `aws s3` komennosta ja löysin, että minun piti asentaa AWSCLI (https://www.geeksforgeeks.org/devops/aws-cli-s3-commands/).
-Koetin ensin asentaa AWSCLI:n ohjeiden mukaan (https://www.geeksforgeeks.org/devops/how-to-install-aws-cli-on-ubuntu/), mutta Debian ei halunnut asentaa sitä pip:n kautta.
-Tämän jälkeen hain "awscli Debian" ja löysin Debianin sivun paketista "awscli" (https://packages.debian.org/sid/awscli).
+Hain tietoa `aws s3` komennosta ja löysin, että minun piti asentaa AWSCLI (Geeksforgeeks.org a. 2025).
+Koetin ensin asentaa AWSCLI:n ohjeiden mukaan (Geeksforgeeks.org b. 2025), mutta Debian ei halunnut asentaa sitä pip:n kautta.
+Tämän jälkeen hain "awscli Debian" ja löysin Debianin sivun paketista "awscli" (Debian s.a.).
 Asensin paketin komennolla `sudo apt-get install awscli`.
 Tämän jälkeen onnistuin lataamaan binäärin koneelleni komennolla `aws s3 cp s3://download.tplinkcloud.com/firmware/Tapo_C200v3_en_1.4.2_Build_250313_Rel.40499n_up_boot-signed_1747894968535.bin Tapo_C200v4_en_1.4.2.bin --no-sign-request`.
 
@@ -21,7 +21,7 @@ Tämän jälkeen ajoin `./extract_keys.sh` skriptin, mutta se kohtasi virheen:
 
 <img width="1265" height="329" alt="image" src="https://github.com/user-attachments/assets/3439f1c2-9c33-4560-9748-e4f39a7c6e4b" />
 
-Etsin internetistä "debian jefferson" ja löysin GitHub repositorion Jefferson työkalulle (https://github.com/onekey-sec/jefferson/).
+Etsin internetistä "debian jefferson" ja löysin GitHub repositorion Jefferson työkalulle (Onekey-sec 2023).
 Koetin ensin asentaa sen ohjeiden mukaan, mutta pip ei halunnut asentaa sitä.
 
 ```
@@ -67,8 +67,8 @@ Ajoin komennon `./tp-link-decrypt/bin/tp-link-decrypt Tapo_C200v4_en_1.4.2.bin` 
 
 Aloin miettiä, miten analysoisin tiedostoa.
 Koska tiedosto oli image kameran firmwaresta, ajattelin, että jos mounttaan imagen, pääsen tutkimaan tiedostoja.
-Etsimisen jälkeen kuitenkin löysin, ettei .bin tiedostoja voi suoraan mountata (https://www.networkinghowtos.com/howto/mounting-bin-cue-files-on-linux/).  
-Jatkoin etsimistä, miten analysoida .bin tiedostoa, ja törmäsin artikkeliin "binwalk: A tool for analyzing and extracting data from firmware images"(https://awjunaid.com/kali-linux/binwalk-a-tool-for-analyzing-and-extracting-data-from-firmware-images/).
+Etsimisen jälkeen kuitenkin löysin, ettei .bin tiedostoja voi suoraan mountata (Networkinghowtos.com 2012).  
+Jatkoin etsimistä, miten analysoida .bin tiedostoa, ja törmäsin artikkeliin "binwalk: A tool for analyzing and extracting data from firmware images"(Awjunaid.com 2025).
 Olin asentanut binwalk:n jo aikaisemmin, joten tutkin, millä komennoilla voisin tutkia tiedostoa.
 Ajoin komennon `binwalk Tapo_C200v4_en_1.4.2.bin.dec |less` nähdäkseni tietoja tiedostosta, ja kiinnitin huomioni `squashfs filesystem` kohtaan.
 
@@ -93,11 +93,11 @@ Toistin edellämainitun operaation binwalkilla dump tiedostolle `binwalk -e --di
 ## Search available applications
 
 Siirryin tutkimaan, mitä ohjelmia tiedostojärjestelmästä löytyi.
-Katsoin ensiksi "bin" hakemiston:
+Katsoin ensiksi `bin` hakemiston:
 
 <img width="225" height="181" alt="image" src="https://github.com/user-attachments/assets/b9a19cbd-e47d-4005-a44b-9b63477a056c" />
 
-Main tiedosto herätti kiinnostukseni, ja tutkin sitä lisää Ghidralla.
+`Main` tiedosto herätti kiinnostukseni, ja tutkin sitä lisää Ghidralla.
 
 <img width="1089" height="615" alt="image" src="https://github.com/user-attachments/assets/a4a5fdee-6ed1-48e5-be44-68f4f494202b" />
 
@@ -107,7 +107,7 @@ Stringsejä oli myös julmetusti, mutta löysin ainakin viittauksia internet yht
 
 <img width="770" height="346" alt="image" src="https://github.com/user-attachments/assets/fc01d396-6087-478a-a7a6-e7a90514610b" />
 
-Stringseissä oli myös viittauksia moottoreihin, sillä kamerassa on pan/tilt ominaisuus (https://www.tp-link.com/us/home-networking/cloud-camera/tapo-c200/).
+Stringseissä oli myös viittauksia moottoreihin, sillä kamerassa on pan/tilt ominaisuus (TP-Link s.a.).
 
 <img width="770" height="441" alt="image" src="https://github.com/user-attachments/assets/7c9dbb62-39a5-4758-954c-ecef24f912f5" />
 
@@ -128,14 +128,14 @@ Ohjelman asetuksia voi listattujen argumenttien perusteella myös muokata. Saman
 
 <img width="1137" height="505" alt="image" src="https://github.com/user-attachments/assets/fc111109-51b8-47e4-881c-c59bd0ba3fd4" />
 
-Tutkin internetistä, mikä "iperf" on, ja selvisi, että se on verkkoyhteyden kaistanleveyden mittaukseen käytettävä ohjelmisto (https://iperf2.sourceforge.io/iperf-manpage.html).
+Tutkin internetistä, mikä "iperf" on, ja selvisi, että se on verkkoyhteyden kaistanleveyden mittaukseen käytettävä ohjelmisto (Sourceforge.io 2025).
 Ohjelma siis auttaa määrittämään maksimaalisen lähetysnopeuden kameralle, jotta oletettavasti se voi myös säätää lähetettävän kuvan laatua, riippuen yhteyden nopeudesta.
 En löytänyt enempää ohjelmia, joten siirryin seuraavaan kohtaan tehtävässä.
 
 ## Analyze and try to open root password
 
 Kameran tiedostojärjestelmä on sama kuin Linux:ssa, joten tarkistin ensin internetistä, mihin käyttäjät ja salasanat tallennettiin.
-Salasanat tallennetaan `/etc/shadow` tiedostoon ja muut tiedot `/etc/passwd` tiedostoon (https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/).
+Salasanat tallennetaan `/etc/shadow` tiedostoon ja muut tiedot `/etc/passwd` tiedostoon (Cyberciti.biz 2023).
 Siirryin ensiksi siis tutkimaan `etc` hakemistoa.
 
 <img width="1210" height="303" alt="image" src="https://github.com/user-attachments/assets/2cd11125-375d-4484-8553-7ed2c0f527fc" />
@@ -143,19 +143,31 @@ Siirryin ensiksi siis tutkimaan `etc` hakemistoa.
 En nähnyt kyseisiä tiedostoja hakemistossa, joten siirryin etsimään `usr` hakemistosta, jos salasanat olisivat siellä.
 En löytänyt `shadow` tai `passwd` tiedostoa sieltäkään.
 Seuraavaksi ajattelin, että voisin etsiä `squashfs-root` hakemistosta viittauksia `root` käyttäjään, jolloin saattaisin löytää ainakin vihjeitä salasanan sijaintiin.
-Tarkistin internetistä `grep` komennon syntaksin (https://www.man7.org/linux/man-pages/man1/grep.1.html) ja ajoin komennon: `grep -Ri "root"` `squashfs-root` hakemistossa.
+Tarkistin internetistä `grep` komennon syntaksin (Man7.org 2025) ja ajoin komennon: `grep -Ri "root"` `squashfs-root` hakemistossa.
 Grep palautti tiedostoja, joista se löysi vastaavia tekstinpätkiä.
 
 <img width="630" height="252" alt="image" src="https://github.com/user-attachments/assets/92b09c49-e948-4e5d-81fc-5a75be3c9a04" />
 
 Kävin tiedostot läpi, mutta en nähnyt viittauksia salasanaan, vaan enneminkin tiedostojärjestelmään.
-Koetin etsiä tietoa internetistä, miksi `/etc/shadow` tiedostoa ei ole olemassa tiedostoissa, mutta en löytänyt vastausta.
+Koetin etsiä tietoa internetistä, miksi `/etc/shadow` tiedostoa ei ole olemassa tiedostoissa, mutta en löytänyt vastausta.  
 Seuraavaksi sain idean etsiä salasanoja `dump` imagesta, joka on otettu kameran muistista.
 Siirryin aikaisemmin luomaani `extract_dump` hakemistoon ja siirryin siellä `etc` hakemistoon.
 En kuitenkaan löytänyt kyseisiä tiedostoja sieltäkään.
-Suoritin myös saman `grep` haun, mutta sain vastaukseksi samat tiedostot, jotka oletin olevan samat sisällöltään.
+Suoritin myös saman `grep` haun, mutta sain vastaukseksi samat tiedostot, jotka oletin olevan samat sisällöiltään.
 
 Itseltäni loppuivat ideat, miten löytää salasana kummastakaan imagesta. Ehkä tunnilla saan vastauksen, miten joku on löytänyt sen.
 
 ## Lähdeluettelo
 
+Awjunaid.com 2025. binwalk: A tool for analyzing and extracting data from firmware images. Luettavissa: https://awjunaid.com/kali-linux/binwalk-a-tool-for-analyzing-and-extracting-data-from-firmware-images/. Luettu: 27.02.2026.  
+Cyberciti.biz 2023. Where are the passwords of the users located in Linux?. Luettavissa: https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/. Luettu: 28.02.2026.  
+Debian s.a. Package: awscli (2.23.6-1). Luettavissa: https://packages.debian.org/trixie/awscli. Luettu: 23.02.2026.  
+Geeksforgeeks.org a. 2025. AWS CLI Commands for S3 Object Storage. Luettavissa: https://www.geeksforgeeks.org/devops/aws-cli-s3-commands/. Luettu: 23.02.2026.  
+Geeksforgeeks.org b. 2025. How to Install AWS CLI on Ubuntu?. Luettavissa: https://www.geeksforgeeks.org/devops/how-to-install-aws-cli-on-ubuntu/. Luettu: 23.02.2026.  
+Iso-Anttila, L. & Karvinen, T. s.a. Harware hacking. Sovellusten hakkerointi ja haavoittuvuudet -opintojakson tehtävänanto Moodlessa. Haaga-Helia ammattikorkeakoulu. Luettu: 28.02.2026.  
+Man7.org 2025. grep(1) — Linux manual page. Luettavissa: https://www.man7.org/linux/man-pages/man1/grep.1.html. Luettu: 28.02.2026.  
+Networkinghowtos.com 2012. Mounting .bin / .cue files on Linux. Luettavissa: https://www.networkinghowtos.com/howto/mounting-bin-cue-files-on-linux/. Luettu: 27.02.2026.  
+Onekey-sec 2023. Jefferson. Luettavissa: https://github.com/onekey-sec/jefferson/. Luettu: 23.02.2026.  
+Robbins 2025. Tp-link-decrypt. Luettavissa: https://github.com/robbins/tp-link-decrypt. Luettu: 23.02.2026.  
+Sourceforge.io 2025. IPERF. Luettavissa: https://iperf2.sourceforge.io/iperf-manpage.html. Luettu: 28.02.2026.  
+TP-Link s.a. Smart Cameras - Tapo C200 V3.20. Luettavissa: https://www.tp-link.com/us/home-networking/cloud-camera/tapo-c200/. Luettu: 28.02.2026.
