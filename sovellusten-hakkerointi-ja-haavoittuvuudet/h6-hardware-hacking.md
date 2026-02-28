@@ -159,15 +159,26 @@ Itseltäni loppuivat ideat, miten löytää salasana kummastakaan imagesta. Ehk�
 
 ## Lähdeluettelo
 
-Awjunaid.com 2025. binwalk: A tool for analyzing and extracting data from firmware images. Luettavissa: https://awjunaid.com/kali-linux/binwalk-a-tool-for-analyzing-and-extracting-data-from-firmware-images/. Luettu: 27.02.2026.  
-Cyberciti.biz 2023. Where are the passwords of the users located in Linux?. Luettavissa: https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/. Luettu: 28.02.2026.  
-Debian s.a. Package: awscli (2.23.6-1). Luettavissa: https://packages.debian.org/trixie/awscli. Luettu: 23.02.2026.  
-Geeksforgeeks.org a. 2025. AWS CLI Commands for S3 Object Storage. Luettavissa: https://www.geeksforgeeks.org/devops/aws-cli-s3-commands/. Luettu: 23.02.2026.  
-Geeksforgeeks.org b. 2025. How to Install AWS CLI on Ubuntu?. Luettavissa: https://www.geeksforgeeks.org/devops/how-to-install-aws-cli-on-ubuntu/. Luettu: 23.02.2026.  
-Iso-Anttila, L. & Karvinen, T. s.a. Harware hacking. Sovellusten hakkerointi ja haavoittuvuudet -opintojakson tehtävänanto Moodlessa. Haaga-Helia ammattikorkeakoulu. Luettu: 28.02.2026.  
-Man7.org 2025. grep(1) — Linux manual page. Luettavissa: https://www.man7.org/linux/man-pages/man1/grep.1.html. Luettu: 28.02.2026.  
-Networkinghowtos.com 2012. Mounting .bin / .cue files on Linux. Luettavissa: https://www.networkinghowtos.com/howto/mounting-bin-cue-files-on-linux/. Luettu: 27.02.2026.  
-Onekey-sec 2023. Jefferson. Luettavissa: https://github.com/onekey-sec/jefferson/. Luettu: 23.02.2026.  
-Robbins 2025. Tp-link-decrypt. Luettavissa: https://github.com/robbins/tp-link-decrypt. Luettu: 23.02.2026.  
-Sourceforge.io 2025. IPERF. Luettavissa: https://iperf2.sourceforge.io/iperf-manpage.html. Luettu: 28.02.2026.  
+Awjunaid.com 2025. binwalk: A tool for analyzing and extracting data from firmware images. Luettavissa: https://awjunaid.com/kali-linux/binwalk-a-tool-for-analyzing-and-extracting-data-from-firmware-images/. Luettu: 27.02.2026.
+
+Cyberciti.biz 2023. Where are the passwords of the users located in Linux?. Luettavissa: https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/. Luettu: 28.02.2026.
+
+Debian s.a. Package: awscli (2.23.6-1). Luettavissa: https://packages.debian.org/trixie/awscli. Luettu: 23.02.2026.
+
+Geeksforgeeks.org a. 2025. AWS CLI Commands for S3 Object Storage. Luettavissa: https://www.geeksforgeeks.org/devops/aws-cli-s3-commands/. Luettu: 23.02.2026.
+
+Geeksforgeeks.org b. 2025. How to Install AWS CLI on Ubuntu?. Luettavissa: https://www.geeksforgeeks.org/devops/how-to-install-aws-cli-on-ubuntu/. Luettu: 23.02.2026.
+
+Iso-Anttila, L. & Karvinen, T. s.a. Harware hacking. Sovellusten hakkerointi ja haavoittuvuudet -opintojakson tehtävänanto Moodlessa. Haaga-Helia ammattikorkeakoulu. Luettu: 28.02.2026.
+
+Man7.org 2025. grep(1) — Linux manual page. Luettavissa: https://www.man7.org/linux/man-pages/man1/grep.1.html. Luettu: 28.02.2026.
+
+Networkinghowtos.com 2012. Mounting .bin / .cue files on Linux. Luettavissa: https://www.networkinghowtos.com/howto/mounting-bin-cue-files-on-linux/. Luettu: 27.02.2026.
+
+Onekey-sec 2023. Jefferson. Luettavissa: https://github.com/onekey-sec/jefferson/. Luettu: 23.02.2026.
+
+Robbins 2025. Tp-link-decrypt. Luettavissa: https://github.com/robbins/tp-link-decrypt. Luettu: 23.02.2026.
+
+Sourceforge.io 2025. IPERF. Luettavissa: https://iperf2.sourceforge.io/iperf-manpage.html. Luettu: 28.02.2026.
+
 TP-Link s.a. Smart Cameras - Tapo C200 V3.20. Luettavissa: https://www.tp-link.com/us/home-networking/cloud-camera/tapo-c200/. Luettu: 28.02.2026.
