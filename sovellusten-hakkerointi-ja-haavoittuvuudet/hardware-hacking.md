@@ -50,7 +50,7 @@ Tämän jälkeen kokeilin virheilmoituksessa mainittua `pipx` metodia.
 Asensin ensin pipx:n `sudo apt-get install pipx` `pipx ensurepath --global`.
 Sen asennuttua ajoin komennon `pipx install jefferson`, nyt Jefferson asentui onnistuneesti.
 
-Ajoin `./extract_keys.sh` uudelleen, ja sen suorittui nyt loppuun onnistuneesti.
+Ajoin `./extract_keys.sh` uudelleen, ja se suorittui nyt loppuun onnistuneesti.
 
 <img width="609" height="79" alt="image" src="https://github.com/user-attachments/assets/3c90f819-da37-4625-bec6-b040014a3b25" />
 
@@ -67,14 +67,17 @@ Ajoin komennon `./tp-link-decrypt/bin/tp-link-decrypt Tapo_C200v4_en_1.4.2.bin` 
 
 Aloin miettiä, miten analysoisin tiedostoa.
 Koska tiedosto oli image kameran firmwaresta, ajattelin, että jos mounttaan imagen, pääsen tutkimaan tiedostoja.
-Etsimisen jälkeen kuitenkin löysin, ettei .bin tiedostoja voi suoraan mountata (https://www.networkinghowtos.com/howto/mounting-bin-cue-files-on-linux/).
+Etsimisen jälkeen kuitenkin löysin, ettei .bin tiedostoja voi suoraan mountata (https://www.networkinghowtos.com/howto/mounting-bin-cue-files-on-linux/).  
 Jatkoin etsimistä, miten analysoida .bin tiedostoa, ja törmäsin artikkeliin "binwalk: A tool for analyzing and extracting data from firmware images"(https://awjunaid.com/kali-linux/binwalk-a-tool-for-analyzing-and-extracting-data-from-firmware-images/).
-Olin asentanut binwalk jo aikaisemmin, joten tutkin, millä komennoilla voisin tutkia tiedostoa.
+Olin asentanut binwalk:n jo aikaisemmin, joten tutkin, millä komennoilla voisin tutkia tiedostoa.
 Ajoin komennon `binwalk Tapo_C200v4_en_1.4.2.bin.dec |less` nähdäkseni tietoja tiedostosta, ja kiinnitin huomioni `squashfs filesystem` kohtaan.
 
 <img width="1265" height="96" alt="image" src="https://github.com/user-attachments/assets/87a2d947-8d92-4099-a04e-0475f40de460" />
 
 Tämä sisältäisi varmaankin järjestelmätiedostot.
+
+## Extract rootfs from the image file
+
 Tein uuden hakemiston tiedostoja varten `mkdir extract` ja ajoin komennon `binwalk -e --directory=extract Tapo_C200v4_en_1.4.2.bin.dec`.
 Tämä extractasi tiedostot kyseiseen hakemistoon.
 Siirryin hakemistoon ja listasin tiedostot `ls -la`.
@@ -86,3 +89,48 @@ Siirryin siihen, ja löysin linuxin hakemistoja:
 ## Extract rootfs from the dump file
 
 Toistin edellämainitun operaation binwalkilla dump tiedostolle `binwalk -e --directory=extract_dump/ dump-tapo-c200v3-1.4.2.bin`.
+
+## Search available applications
+
+Siirryin tutkimaan, mitä ohjelmia tiedostojärjestelmästä löytyi.
+Katsoin ensiksi "bin" hakemiston:
+
+<img width="225" height="181" alt="image" src="https://github.com/user-attachments/assets/b9a19cbd-e47d-4005-a44b-9b63477a056c" />
+
+Main tiedosto herätti kiinnostukseni, ja tutkin sitä lisää Ghidralla.
+
+<img width="1089" height="615" alt="image" src="https://github.com/user-attachments/assets/a4a5fdee-6ed1-48e5-be44-68f4f494202b" />
+
+Tiedostossa on selvästi paljon kaikkea, sillä Ghidran analysoinnissakin kesti hetki.
+En saanut koodista hirveästi selkoa, mutta katsoin mitä tekstiä ohjelmasta löytyi.
+Stringsejä oli myös julmetusti, mutta löysin ainakin viittauksia internet yhteyden muodostamiseen ja DNS kyselyihin:
+
+<img width="770" height="346" alt="image" src="https://github.com/user-attachments/assets/fc01d396-6087-478a-a7a6-e7a90514610b" />
+
+Stringseissä oli myös viittauksia moottoreihin, sillä kamerassa on pan/tilt ominaisuus (https://www.tp-link.com/us/home-networking/cloud-camera/tapo-c200/).
+
+<img width="770" height="441" alt="image" src="https://github.com/user-attachments/assets/7c9dbb62-39a5-4758-954c-ecef24f912f5" />
+
+Tästä päättelin, että tämä on oletettavasti kameran pääohjelma (nimestäkin päätellen), jolla kaikki sen toiminnallisuus toteutetaan.
+Muut ohjelmat ovat luultavasti ns. apuohjelmia tai boottauksen aikaisia ohjelmia, joilla testataan kameran olevan kunnossa (kuten "getcpuinfo" ja "impdbg").
+
+Tutkin myös muut hakemistot läpi, jos niistä löytyisi lisää ohjelmia tai muuta kiinnostavaa.
+Muista hakemistoista ei löytynyt lisää ohjelmia (tai ainakaan en itse niitä ohjelmiksi tunnistanut), mutta `usr` hakemistossa oli oma `bin` hakemisto.
+
+<img width="939" height="176" alt="image" src="https://github.com/user-attachments/assets/aa7e54cd-79ce-4175-880c-c0cdea98d497" />
+
+Katsoin `iperf` ohjelmaa `strings` komennolla.
+
+<img width="1276" height="641" alt="image" src="https://github.com/user-attachments/assets/0e842f01-4427-462d-a065-1cc12b54e5e7" />
+
+Luulen, että ohjelma liittyy kuvan lähettämiseen laitteelle, josta voi katsella kameran kuvaa.
+Ohjelman asetuksia voi listattujen argumenttien perusteella myös muokata. Samankaltaisia argumentteja löytyi myös server sidelle:
+
+<img width="1137" height="505" alt="image" src="https://github.com/user-attachments/assets/fc111109-51b8-47e4-881c-c59bd0ba3fd4" />
+
+Tutkin internetistä, mikä "iperf" on, ja selvisi, että se on verkkoyhteyden kaistanleveyden mittaukseen käytettävä ohjelmisto (https://iperf2.sourceforge.io/iperf-manpage.html).
+Ohjelma siis auttaa määrittämään maksimaalisen lähetysnopeuden kameralle, jotta oletettavasti se voi myös säätää lähetettävän kuvan laatua, riippuen yhteyden nopeudesta.
+En löytänyt enempää ohjelmia, joten siirryin seuraavaan kohtaan tehtävässä.
+
+## Analyze and try to open root password
+
