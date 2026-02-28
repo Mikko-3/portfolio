@@ -134,3 +134,28 @@ En löytänyt enempää ohjelmia, joten siirryin seuraavaan kohtaan tehtäväss�
 
 ## Analyze and try to open root password
 
+Kameran tiedostojärjestelmä on sama kuin Linux:ssa, joten tarkistin ensin internetistä, mihin käyttäjät ja salasanat tallennettiin.
+Salasanat tallennetaan `/etc/shadow` tiedostoon ja muut tiedot `/etc/passwd` tiedostoon (https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/).
+Siirryin ensiksi siis tutkimaan `etc` hakemistoa.
+
+<img width="1210" height="303" alt="image" src="https://github.com/user-attachments/assets/2cd11125-375d-4484-8553-7ed2c0f527fc" />
+
+En nähnyt kyseisiä tiedostoja hakemistossa, joten siirryin etsimään `usr` hakemistosta, jos salasanat olisivat siellä.
+En löytänyt `shadow` tai `passwd` tiedostoa sieltäkään.
+Seuraavaksi ajattelin, että voisin etsiä `squashfs-root` hakemistosta viittauksia `root` käyttäjään, jolloin saattaisin löytää ainakin vihjeitä salasanan sijaintiin.
+Tarkistin internetistä `grep` komennon syntaksin (https://www.man7.org/linux/man-pages/man1/grep.1.html) ja ajoin komennon: `grep -Ri "root"` `squashfs-root` hakemistossa.
+Grep palautti tiedostoja, joista se löysi vastaavia tekstinpätkiä.
+
+<img width="630" height="252" alt="image" src="https://github.com/user-attachments/assets/92b09c49-e948-4e5d-81fc-5a75be3c9a04" />
+
+Kävin tiedostot läpi, mutta en nähnyt viittauksia salasanaan, vaan enneminkin tiedostojärjestelmään.
+Koetin etsiä tietoa internetistä, miksi `/etc/shadow` tiedostoa ei ole olemassa tiedostoissa, mutta en löytänyt vastausta.
+Seuraavaksi sain idean etsiä salasanoja `dump` imagesta, joka on otettu kameran muistista.
+Siirryin aikaisemmin luomaani `extract_dump` hakemistoon ja siirryin siellä `etc` hakemistoon.
+En kuitenkaan löytänyt kyseisiä tiedostoja sieltäkään.
+Suoritin myös saman `grep` haun, mutta sain vastaukseksi samat tiedostot, jotka oletin olevan samat sisällöltään.
+
+Itseltäni loppuivat ideat, miten löytää salasana kummastakaan imagesta. Ehkä tunnilla saan vastauksen, miten joku on löytänyt sen.
+
+## Lähdeluettelo
+
