@@ -148,3 +148,124 @@ Hexat vastaavat toisiaan, joten ongelma on ratkaistu. Tuntuu, että tämän olis
 
 ### c) Single-byte XOR cipher
 
+Aloitin luomalla uuden tiedoston ja kopion sinne aikaisemmin luomani koodin.
+Nyt minulla oli valmiina hexan muunto ascii muotoon ja tekstin XOR avainta vastaan.
+Avain ei ollut tiedossa, mutta tehtävän anto kertoi sen olevan yksi kirjain.
+Ajattelin siis, että käyn aakkoset läpi järjestyksessä ja suoritan XOR jokaisella kirjaimella.
+Ongelma oli kuitenkin, että avaimen olisi oltava yhtä pitkä kuin viestin.
+Tutkin löytämääni artikkelia, ja huomasin, että kohdan 3 koodi esimerkissä oli kohta, jossa tarkastettiin avaimen pituus ja toistettiin sitä, kunnes se oli yhtä pitkä kuin viesti (Medium).
+Kirjoitin koodin funktioon `xor_strings`.
+
+```
+def xor_strings(str1, str2):
+    # Check if strings are of equal length
+    if len(str1) != len(str2):
+        # Ensure the key matches the message length
+        key = str2 * (len(str1) // len(str2)) + str2[:len(str1) % len(str2)]
+    # XOR each character and join the results
+    xor_result = ''.join(chr(ord(a) ^ ord(b)) for a, b in zip(str1, key))
+    return xor_result
+```
+
+Seuraavaksi loin silmukan, jossa kävin läpi ascii aakkosten kirjaimet avaimena ja tallensin tulokset `messages` sanakirjaan.
+
+```
+while i < len(alphabet):
+    message = xor_strings(ascii_message,alphabet[i])
+    if message not in messages:
+        messages.update({alphabet[i]:message})
+    i += 1
+```
+
+Päätin tulostaa arvot ja katsoa, mitä löytäisin.
+Tulostus oli sotkuinen ilman muotoilua, mutta huomasin seassa jotain mielenkiintoista:
+
+<img width="610" height="78" alt="image" src="https://github.com/user-attachments/assets/cf2e6ce0-0c23-4169-b606-0cf8b918a9d5" />
+
+Selkeä lause avaimella "X".
+Tämä ei kuitenkaan ollut täysin oikea tapa ratkaista tehtävää, sillä en tehnyt vertailuja yleisimpiin englannin kielen kirjaimiin "ETAOIN SHRDLU".
+Yritin seuraavaksi toteuttaa kyseisen toiminnallisuuden.
+
+Loin silmukan, joka käy läpi kaikki aakkoset.
+Silmukan sisällä on toinen silmukka, jossa käydään läpi kaikki edellä mainitut yleisimmät kirjaimet.
+Jos kirjain löytyy `messages` sanakirjan aakkosen avaimella olevasta arvosta, lisätään pistelaskuriin 1.
+Kun kirjaimet on käyty läpi arvosta, tallennetaan toiseen sanakirjaan pisteet ja avaimen arvo eli aakkosen kirjain.
+Lopuksi tulostetaan pisteet.
+
+```
+for l in alphabet:
+    score = 0
+    for c in letters:
+        if c in messages[l]:
+            score += 1
+    key_scores.update({score:l})
+print(key_scores)
+```
+
+Lopputulos toimi, mutta ei tulostanut odottamaani avainta "X" ollenkaan.
+
+<img width="730" height="39" alt="image" src="https://github.com/user-attachments/assets/a03ba3c0-5aed-4e11-b596-1a4008184bf3" />
+
+Lauseessa ei siis ole silmukan mukaan ole yhtäkään yleisintä kirjainta, vaikka näin ei ole.
+Print debuggauksella huomasin, että "X" sai pisteiksi 9, yhtä paljon kuin arvo "Z".
+Koska lisäsin pisteet avaimen paikalle ja kirjaimen arvoksi, tulos ylikirjoittui, jos jollain oli sama pistemäärä.
+Vaihdoin sanakirjan päivitykseen arvot toisinpäin `key_scores.update({l:score})`.
+Nyt tulostuksessa näkyivät kaikki arvot.
+
+<img width="1263" height="133" alt="image" src="https://github.com/user-attachments/assets/1466453b-80fb-4a4d-9600-b5e15f93e1a1" />
+
+Seuraavaksi piti enää järjestää lista isoimmasta pistemäärästä pienimpään ja tulostaa suurimmat arvot.
+Käytin tähän `lambda` ja `sorted`, sekä `itertools.islice` funktioita (Geeksforgeeks a,b 2025).
+
+**Lopullinen koodi kokonaisuudessaan:**
+
+```
+import string
+import operator
+from itertools import islice
+
+def xor_strings(str1, str2):
+    # Check if strings are of equal length
+    if len(str1) != len(str2):
+        # Ensure the key matches the message length
+        key = str2 * (len(str1) // len(str2)) + str2[:len(str1) % len(str2)]
+    # XOR each character and join the results
+    xor_result = ''.join(chr(ord(a) ^ ord(b)) for a, b in zip(str1, key))
+    return xor_result
+
+hex_message = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+byte_message = bytearray.fromhex(hex_message)
+ascii_message = byte_message.decode('ascii')
+alphabet = string.ascii_letters
+
+i = 0
+messages = {}
+letters = "ETAOINSHRDLUetaoinshrdlu"
+key_scores = {}
+
+while i < len(alphabet):
+    message = xor_strings(ascii_message,alphabet[i])
+    if message not in messages:
+        messages.update({alphabet[i]:message})
+    i += 1
+
+for l in alphabet:
+    score = 0
+    for c in letters:
+        if c in messages[l]:
+            score += 1
+    key_scores.update({l:score})
+
+ordered_scores = dict(sorted(key_scores.items(),key=lambda item: item[1],reverse=True))
+
+top5 = dict(islice(ordered_scores.items(),5))
+
+print(f"Top 5 keys with most hits in 'most common English letters':\n{top5}")
+
+for v in top5:
+    print(f"{v} = {messages[v]}")
+```
+
+<img width="773" height="336" alt="image" src="https://github.com/user-attachments/assets/0fb02943-cffa-4ca3-b87f-e4861f43e1d1" />
+
+### d) 
