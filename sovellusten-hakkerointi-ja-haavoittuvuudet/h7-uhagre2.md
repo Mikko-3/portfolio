@@ -1,6 +1,6 @@
 # h7 Uhagre2
 
-Tehtävänanto löytyy terokarvinen.com sivustolta (Karvinen 2026).
+Tehtävänanto löytyy terokarvinen.com sivustolta "Application hacking" -kurssin sivulta (Karvinen 2026).
 
 ## x) Tiivistelmät
 
@@ -60,7 +60,7 @@ Tehtävänannot luettavissa Cryptopals sivustolta (Cryptopals s.a.).
 
 Asensin ensin IPython tulkin `sudo apt-get install ipython3` ja lisäosan microon `micro --plugin install runit` (Karvinen 2024).
 Avasin ipythonin ja hain internetistä komentoa, miten muuntaa hexakoodi base64 muotoon.
-Seurasin löytämääni ohjetta (https://www.delftstack.com/howto/python/convert-hex-to-base64-python/) ja suoritin komennot ipythonissa.
+Seurasin löytämääni ohjetta (DelftStack a. 2024) ja suoritin komennot ipythonissa.
 Sain lopputulokseksi saman tekstin kuin cryptopals tehtävänannossa.
 
 <img width="942" height="133" alt="image" src="https://github.com/user-attachments/assets/54a0149c-7cfe-45a7-9086-db08e098c55d" />
@@ -95,19 +95,19 @@ print (decoded_string)
 <img width="795" height="126" alt="image" src="https://github.com/user-attachments/assets/cb4efa7d-f165-44da-bb01-11b10278e2c6" />
 
 Varmistettuani tämän osan koodista toimivan, siirryin seuraavaan kohtaan tehtävässä.
-Hain tietoa, miten pythonissa suoritetaan XOR funktio kahdelle stringsille ja löysin artikkelin (https://medium.com/@amit25173/how-to-xor-strings-in-python-a-beginner-friendly-guide-17b23aa8728f).
+Hain tietoa, miten pythonissa suoritetaan XOR funktio kahdelle stringsille ja löysin artikkelin (Medium 2025).
 Minun piti siis muuttaa teksti ascii muotoon, mutta kohtasin ongelman:
 
 <img width="1096" height="123" alt="image" src="https://github.com/user-attachments/assets/ad800f2a-e6e1-43d0-af85-6e08cb5693e1" />
 
-Päätin aloittaa "puhtaalta pöydältä" ja seurata löytämäni artikkelin ohjeita kohdasta 5.2 (Medium).
+Päätin aloittaa "puhtaalta pöydältä" ja seurata löytämäni artikkelin ohjeita kohdasta 5.2 (Medium 2025).
 Ongelmana oli vielä muuntaa hexa ascii muotoon, sillä omat stringsini eivät olleet tekstiä.
-Löysin siihenkin onneksi ohjeet (https://www.delftstack.com/howto/python/hex-to-ascii-python/).
+Löysin siihenkin onneksi ohjeet (DelftStack b. 2024).
 Testailtuani koodia, sain tulokseksi tämän:
 
 <img width="412" height="162" alt="image" src="https://github.com/user-attachments/assets/79f3ed84-9dbb-44ad-aed1-e663a492bf76" />
 
-Tajusin sitten, että vastaus oli myös hexa muodossa, joten muunsin tekstin takaisin hexaksi (https://pythonguides.com/convert-string-to-hexadecimal-in-python/).
+Tajusin sitten, että vastaus oli myös hexa muodossa, joten muunsin tekstin takaisin hexaksi (Pythonguides 2025).
 Lopullinen koodi:
 
 ```
@@ -150,10 +150,10 @@ Hexat vastaavat toisiaan, joten ongelma on ratkaistu. Tuntuu, että tämän olis
 
 Aloitin luomalla uuden tiedoston ja kopion sinne aikaisemmin luomani koodin.
 Nyt minulla oli valmiina hexan muunto ascii muotoon ja tekstin XOR avainta vastaan.
-Avain ei ollut tiedossa, mutta tehtävän anto kertoi sen olevan yksi kirjain.
+Avain ei ollut tiedossa, mutta tehtävänanto kertoi sen olevan yksi kirjain.
 Ajattelin siis, että käyn aakkoset läpi järjestyksessä ja suoritan XOR jokaisella kirjaimella.
 Ongelma oli kuitenkin, että avaimen olisi oltava yhtä pitkä kuin viestin.
-Tutkin löytämääni artikkelia, ja huomasin, että kohdan 3 koodi esimerkissä oli kohta, jossa tarkastettiin avaimen pituus ja toistettiin sitä, kunnes se oli yhtä pitkä kuin viesti (Medium).
+Tutkin löytämääni artikkelia, ja huomasin, että kohdan 3 koodi esimerkissä oli kohta, jossa tarkastettiin avaimen pituus ja toistettiin sitä, kunnes se oli yhtä pitkä kuin viesti (Medium 2025).
 Kirjoitin koodin funktioon `xor_strings`.
 
 ```
@@ -206,7 +206,7 @@ Lopputulos toimi, mutta ei tulostanut odottamaani avainta "X" ollenkaan.
 
 <img width="730" height="39" alt="image" src="https://github.com/user-attachments/assets/a03ba3c0-5aed-4e11-b596-1a4008184bf3" />
 
-Lauseessa ei siis ole silmukan mukaan ole yhtäkään yleisintä kirjainta, vaikka näin ei ole.
+Lauseessa ei siis silmukan mukaan ole yhtäkään yleisintä kirjainta, vaikka näin ei ole.
 Print debuggauksella huomasin, että "X" sai pisteiksi 9, yhtä paljon kuin arvo "Z".
 Koska lisäsin pisteet avaimen paikalle ja kirjaimen arvoksi, tulos ylikirjoittui, jos jollain oli sama pistemäärä.
 Vaihdoin sanakirjan päivitykseen arvot toisinpäin `key_scores.update({l:score})`.
@@ -215,7 +215,7 @@ Nyt tulostuksessa näkyivät kaikki arvot.
 <img width="1263" height="133" alt="image" src="https://github.com/user-attachments/assets/1466453b-80fb-4a4d-9600-b5e15f93e1a1" />
 
 Seuraavaksi piti enää järjestää lista isoimmasta pistemäärästä pienimpään ja tulostaa suurimmat arvot.
-Käytin tähän `lambda` ja `sorted`, sekä `itertools.islice` funktioita (Geeksforgeeks a,b 2025).
+Käytin tähän `lambda` ja `sorted`, sekä `itertools.islice` funktioita (Geeks for geeks a. 2025; Geeks for geeks b. 2025).
 
 **Lopullinen koodi kokonaisuudessaan:**
 
@@ -266,6 +266,113 @@ for v in top5:
     print(f"{v} = {messages[v]}")
 ```
 
+Nyt ohjelma tulostaa viisi suurimman pistemäärän saanutta avainta ja niillä XOR:tut viestit.
+
 <img width="773" height="336" alt="image" src="https://github.com/user-attachments/assets/0fb02943-cffa-4ca3-b87f-e4861f43e1d1" />
 
-### d) 
+### d) Detect single-character XOR
+
+Kopioin ensin edellisen tehtävän koodin uuteen tiedostooon `c4set1.py` ja latasin tekstitiedoston Cryptopals sivustolta `wget https://cryptopals.com/static/challenge-data/4.txt`.
+Avasin ensin tekstitiedoston `cat |less` ja tutkin sen sisältöä.
+Tiedosto sisälsi paljon 60 merkkiä pitkiä merkkijonoja erotettuna rivinvaihdolla.
+Tehtävänannon mukaan yksi näistä olisi XOR:ttu yhtä kirjainta vastaan, joten ajattelin, että käyn tiedoston läpi pythonilla rivi riviltä ja hyödynnän edellisen tehtävän koodia.
+
+En muistanut, miten pythonissa luettiin tiedostoja, joten etsin ensiksi ohjeet sen tekemiseen.
+Löysin artikkelin, jossa ohjeistettiin tiedostojen avaaminen, läpikäyminen ja sulkeminen (Geeks for geeks c. 2025).
+Tiedoston merkkijonot vaikuttivat olevan hexakoodia, joten pidin edellisen tehtävän hexa muunnokset ennallaan.
+Loin silmukan, joka luki tiedoston rivi kerrallaan ja talletti rivin tekstin listaan.
+Testatessa vastaani tuli kuitenkin ongelma muuttaessa luettua arvoa ascii muotoon:
+
+<img width="1267" height="103" alt="image" src="https://github.com/user-attachments/assets/011a584d-bd97-417f-a43a-0c537839334c" />
+
+Koitin tutkia ongelmaa, mutta tiedosto oli jo ascii muodossa, eikä sen avaaminen ascii encodingilla auttanut virheeseen.
+Minulta loppui aika ja ideat kesken tämän ongelman ratkomisessa, mutta luulen että olin oikeilla jäljillä koodissani.
+
+**Lopullinen koodi (ei toimiva)**
+
+```
+import string
+import operator
+from itertools import islice
+
+def xor_strings(str1, str2):
+    # Check if strings are of equal length
+    if len(str1) != len(str2):
+        # Ensure the key matches the message length
+        key = str2 * (len(str1) // len(str2)) + str2[:len(str1) % len(str2)]
+    # XOR each character and join the results
+    xor_result = ''.join(chr(ord(a) ^ ord(b)) for a, b in zip(str1, key))
+    return xor_result
+
+alphabet = string.ascii_letters
+letters = "ETAOINSHRDLUetaoinshrdlu"
+messages = {}
+key_scores = {}
+file_entries = []
+file_ascii = []
+
+file = open("4.txt", "r", encoding="ascii") #avaa tiedosto luku modessa
+hex_line = file.readline() #lue ensimmäinen rivi ja talleta se muuttujaan
+
+while hex_line:
+    file_entries.append(hex_line.strip()) #poista rivinvaihto lopusta ja lisää listaan
+    hex_line = file.readline() #seuraava rivi
+
+file.close() #sulje tiedosto
+
+for e in file_entries: #käy tiedostosta tallennetut tekstit läpi
+    byte_line = bytearray.fromhex(e) #ota hexakoodi ja muunna bytearrayksi
+    ascii_line = byte_line.decode('ascii') #muunna hexakoodin bytearray ascii muotoon
+    file_ascii.append(ascii_line) #lisää ascii teksti listaan
+
+for letter in alphabet: #käy aakkoset läpi
+    i = 0
+    message = xor_strings(file_entries[i],letter) #käy listan arvot läpi aakkosen kirjaimen kanssa
+    if message not in messages:
+        messages.update({letter:message}) #lisää aakkosen kirjain ja XOR tulos sanakirjaan
+    i += 1
+
+for l in alphabet: #käy aakkoset läpi uudestaan, koska sanakirjassa on arvo jokaiselle aakkosen kirjaimelle
+    score = 0
+    for c in letters: #käy läpi yleisimmät kirjaimet
+        if c in messages[l]: #jos kirjain löytyy tekstistä, lisää 1 pisteisiin
+            score += 1
+    key_scores.update({l:score}) #lisää aakkosen kirjain ja sen saamat pisteet sanakirjaan
+
+ordered_scores = dict(sorted(key_scores.items(),key=lambda item: item[1],reverse=True)) #järjestä sanakirja suurimmasta pienimpään
+
+top5 = dict(islice(ordered_scores.items(),5)) #ota sanakirjasta 5 ensimmäistä itemiä
+
+print(f"Top 5 keys with most hits in 'most common English letters':\n{top5}")
+
+for v in top5:
+    print(f"{v} = {messages[v]}")
+```
+
+Harmi että aika loppui kesken, enkä onnistunut löytämään virheen aiheuttajaa.
+
+## Lähdeluettelo
+
+Cryptopals s.a. The cryptopals crypto challenges. Luettavissa: https://cryptopals.com/sets/1. Luettu: 07.03.2026.
+
+DelftStack a. 2024. How to Convert Hex to Base64 in Python. Luettavissa: https://www.delftstack.com/howto/python/convert-hex-to-base64-python/. Luettu: 06.03.2026.
+
+DelftStack b. 2024. How to Convert Hex to ASCII in Python. Luettavissa: https://www.delftstack.com/howto/python/hex-to-ascii-python/. Luettu: 06.03.2026.
+
+Geeks for geeks a. 2025. Sort a Dictionary - Python. Luettavissa: https://www.geeksforgeeks.org/python/python-sort-a-dictionary/. Luettu: 06.03.2026.
+
+Geeks for geeks b. 2025. Get first K items in dictionary = Python. Luettavissa: https://www.geeksforgeeks.org/python/python-get-first-k-items-in-dictionary/. Luettu: 06.03.2026.
+
+Geeks for geeks c. 2025. Reading a File in Python. Luettavissa: https://www.geeksforgeeks.org/python/how-to-read-from-a-file-in-python/. Luettu: 07.03.2026.
+
+Karvinen, T. 2026. Application hacking - 2026 Spring. Luettavissa: https://terokarvinen.com/application-hacking/#laksyt. Luettu: 07.03.2026.
+
+Karvinen, T. 2024. Python Basics for Hackers. Luettavissa: https://terokarvinen.com/python-for-hackers/. Luettu: 05.03.2026.
+
+Medium 2025. How to XOR Strings in Python: A Beginner-Friendly Guide. Luettavissa: https://medium.com/@amit25173/how-to-xor-strings-in-python-a-beginner-friendly-guide-17b23aa8728f.
+Luettu: 05.03.2026.
+
+Pythonguides 2025. How to Convert String to Hex in Python? Luettavissa: https://pythonguides.com/convert-string-to-hexadecimal-in-python/. Luettu: 06.03.2026.
+
+Schneier, B. 2015. Applied Cryptography: Protocols, Algorithms and Source Code in C, 20th Anniversary Edition. Wiley. Hoboken, New Jersey. E-kirja. Luettu: 05.03.2026.
+
