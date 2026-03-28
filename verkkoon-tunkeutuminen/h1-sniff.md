@@ -147,6 +147,49 @@ Liikenne on kuitenkin TLS-salauksella suojattua, joten mitä käyttäjä oli siv
 
 ## i) Analyysi
 
+Analyysia varten kaappasin liikennettä, kun menin selaimella osoitteeseen "www.google.com".
 
+<img width="1163" height="297" alt="image" src="https://github.com/user-attachments/assets/007e5155-a4bb-47f6-8173-22adcf66e615" />
+
+Ensimmäiset kuusi pakettia ovet Domain Name Service kyselyitä ja vastauksia.
+Selain lähettää kyselyn, jossa se pyytää osoitteen "www.google.com" IP-osoitetta DNS-palvelimelta.
+Kysely ohjataan oletusyhdyskäytävälle, eli reitittimelle, joka välittää kyselyn DNS-palvelimelle, joka sen asetuksissa on asetettu.
+Kun reititin on saanut vastauksen, se välittää vastauksen takaisin selaimelle.
+
+Tämän jälkeen selain ottaa yhteyttä palvelimeen, käyttäen QUIC protokollaa.
+QUIC on kuljetuskerroksen protokolla, jonka tarkoituksena on mm. pienentää viivettä verrattuna vanhempaan TCP protokollaan (Kehr 2021).
+
+<img width="1111" height="155" alt="image" src="https://github.com/user-attachments/assets/566aff61-c08f-467f-a260-57df96971393" />
+
+Palvelin ja virtuaalikone suorittavat tarvittavat kättelyt ja siirtävät dataa, jota ei voi nähdä selkokielisenä.
+Data on salattu TLS 1.3 salauksella, joka on oletuksena käytössä QUIC protokollassa jo ensimmäisessä yhteydenotossa (Kehr 2021).
+
+<img width="1168" height="194" alt="image" src="https://github.com/user-attachments/assets/1e0b1a5d-3640-4b61-a99c-9d131f460c2c" />
+
+Tämän jälkeen selain lähettää uuden DNS-kyselyn osoitteesta "o.pki.goog", joka on Google Trust Services:n osoite (https://pki.goog/).
+Vastauksen saatuaan selain muodostaa yhteyden palvelimeen käyttäen TCP:tä ja ne suorittavat kolmivaiheisen kättelyn (SYN,SYN+ACK,ACK).
+Tämän jälkeen selain pyytää Trust Services palvelinta tarkistamaan verkkosivun sertifikaatin käyttämällä OCSP protokollaa, johon se saa hyväksytyn vastauksen.
+
+<img width="726" height="374" alt="image" src="https://github.com/user-attachments/assets/fea4918d-8a6e-416a-8fe1-a0efaab52417" />
+
+Loppu liikenne on samankaltaista kuin edellä kuvattu:  
+Ensin DNS-kysely, jonka jälkeen yhteyden muodostaminen käyttäen QUIC tai TCP eri Googlen palveluihin, joita sivusto tarvitsee (kuten fonts.gstatic.com).
+Välissä myös OCSP kyselyitä ja vastauksia.
 
 ## Lähdeluettelo
+
+Atkin, R. 2022. Identify a randomised (locally administered) MAC Address. Luettavissa: https://richardatkin.com/post/2022/01/14/MAC-Address-Randomisation.html. Luettu: 28.03.2026.
+
+Geeks for geeks 2024. Disabling and Enabling an Interface on Linux System. Luettavissa: https://www.geeksforgeeks.org/linux-unix/disabling-and-enabling-an-interface-on-linux-system/. Luettu: 28.03.2026.
+
+Karvinen, T. 2026. Verkkoon tunkeutuminen ja tiedustelu. Luettavissa: https://terokarvinen.com/verkkoon-tunkeutuminen-ja-tiedustelu/#h1-sniff. Luettu: 28.03.2026.
+
+Karvinen, T. a. 2025. Wireshark - Getting Started. Luettavissa: https://terokarvinen.com/wireshark-getting-started/. Luettu: 28.03.2026.
+
+Karvinen, T. b. 2025. Network Interface Names on Linux. Luettavissa: https://terokarvinen.com/network-interface-linux/. Luettu: 28.03.2026.
+
+Kehr, J. 2021. What's QUIC? Luettavissa: https://techcommunity.microsoft.com/blog/networkingblog/whats-quic/2683367. Luettu: 28.03.2026.
+
+Phillips, A. Identify hardware with OUI lookup in Wireshark. Luettavissa: https://www.comparitech.com/net-admin/oui-lookup-wireshark/. Luettu: 28.03.2026.
+
+Wikipedia 2026. Internet protocol suite. Luettavissa: https://en.wikipedia.org/wiki/Internet_protocol_suite. Luettu: 28.03.2026.
