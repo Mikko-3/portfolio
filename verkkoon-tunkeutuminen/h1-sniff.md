@@ -97,3 +97,56 @@ Alhaalta ylöspäin kerrokset ovat: sovelluskerros (application layer), kuljetus
 - Ethernet kuuluu siirtokehyskerrokseen, se jakaa paketit kehyksiksi, jotka lähetetään esim. verkkokaapelia pitkin verkkokortista toiseen sen MAC-osoitteen perusteella.
 
 (Wikipedia 2026.)
+
+## e) Mitäs tuli surffattua?
+
+Latasin `surfing-secure.pcap` tiedoston ja avasin sen Wiresharkissa.
+Avasin "Statistics" valikosta "capture file properties" tutkiakseni, paljonko paketteja tiedostossa on ja miltä ajalta.
+Tiedoissa kerrottiin paketteja olevan 283 kpl ja kaappauksen keston olleen n. 7 sekuntia.
+Avasin seuraavaksi "Statistics" valikosta "IPv4 Statistics" ja "All addresses".
+Tästä näin kaikki IP-osoitteet, joista näkee kaikkien laitteiden määrän, 7.
+Tämä sisältää tietysti myös reitittimet, joten tietokoneita on vähemmän kuin tämä määrä.
+Käyttäjän tietokoneen osoitteen päättelin olevan 192.168.122.7, sillä se on osoite, josta DNS kyselyt lähtevät alunperin.
+
+Kaappauksessa näkyy aluksi DNS kyselyjä osoitteisiin google.com ja terokarvinen.com.
+Tämän jälkeen QUIC ja TCP protokollia ja TLS protokollaa.
+Nämä sisältävät luultavimmin liikennettä selaimen ja terokarvinen.com sivuston palvelimen välillä.
+Välissä on myös ARP kysely ja sen vastaus.
+Lopuksi yhteys suljetaan TCP RST-viestillä, mahdollisesti, koska selain suljettiin.
+
+## g) Minkä merkkinen verkkokortti käyttäjällä on?
+
+Yritin selvittää verkkokortin valmistajaa.
+En löytänyt Wiresharkista suoraan valmistajaa, joten etsin verkosta "wireshark find nic manufacturer" ja löysin ohjeet asian selvittämiseen (Phillips 2024).
+Siirryin pakettiin, jossa oli käyttäjän IP-osoite 192.168.122.7 ja avasin Ethernet kohdan tiedot.
+Paketti lähetettiin käyttäjän IP-osoitteesta, joten MAC-osoite on "Source" kentässä.
+Kopioin MAC-osoitteen ja hain sen tietoja macvendorlookup.com sivustolta, mutta sivusto ei löytänyt mitään tietoja.
+
+<img width="829" height="421" alt="image" src="https://github.com/user-attachments/assets/3b3925a0-e55e-41cd-8426-2f56a4524267" />
+
+Sitten huomasin että Wiresharkissa osoitteen kohdalla luki "Locally administered address".
+Löysin artikkelin, jossa ohjeistettiin niiden tunnistaminen.
+Artikkelissa myös kerrottiin, että tämä on anonymisointi tekniikka, jolla voi vaikeuttaa laitteen tunnistamista.
+MAC-osoite on siis satunnaisgeneroitu, eikä siitä selviä mitään tietoja etsimällä. (Atkin 2022.)
+
+## h) Millä weppipalvelimella käyttäjä on surffaillut?
+
+Kohdassa e olin jo huomannut että käyttäjä oli tehnyt DNS-kyselyitä "google.com" ja "terokarvinen.com" sivustoille.
+Tutkin kuitenkin tarkemmin palvelimen tietoja, jolla käyttäjä oli "terokarvinen.com" sivustoa käyttänyt.
+Selvitin ensin minkä osoitteen DNS palvelin oli antanut vastaukseksi "terokarvinen.com" kyselyyn.
+Avasin DNS-kysely paketin tiedot ja avasin kohdan "Domain Name System (response)" ja sitten kohdan "Answers".
+Täällä näkyi vastaus kyselyyn, jossa oli palvelimen IP-osoite.
+
+<img width="576" height="204" alt="image" src="https://github.com/user-attachments/assets/f7408975-cc51-4164-bb72-9394a3c7101e" />
+
+Asetin osoitteen filtteriksi Wiresharkiin, ja suurin osa kaikesta liikenteestä oli tämän osoitteen ja käyttäjän välistä.
+Laitoin IP-osoitteen selaimeen ja siirryin sivulle.
+Selain avasi Laksun kirjautumissivun, app.terokarvinen.com.
+Käyttäjä oli siis käyttänyt Laksua.
+Liikenne on kuitenkin TLS-salauksella suojattua, joten mitä käyttäjä oli sivustolla tehnyt, ei pysty tästä selvittämään.
+
+## i) Analyysi
+
+
+
+## Lähdeluettelo
