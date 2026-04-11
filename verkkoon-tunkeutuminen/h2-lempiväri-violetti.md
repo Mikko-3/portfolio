@@ -121,7 +121,47 @@ Avasin tiedoston `sudoedit` komennolla ja muutin tiedon Firefoxin tiedoksi, joka
 
 ## h) Pienemmät jäljet
 
+Suoritin uudelleen `ncap -A localhost` skannauksen ja tutkin tuloksia.
+Nmap:n tulosteessa en huomannut eroa edelliseen, mutta Apachen lokitiedoissa ero näkyy uusimmissa lisäyksissä 17:02.
 
+<img width="1262" height="176" alt="image" src="https://github.com/user-attachments/assets/446ba89f-9985-4a2c-99e7-e89c5abc6e29" />
+
+Nyt nmap raportoi palvelimelle olevansa Firefox selain.
+Sana "nmap" löytyi vielä kuvassakin näkyvästä `nmaplowercheck1775916144` tekstistä, kun hain lokitiedoista sanaa grep komennolla `grep -i "nmap" /var/log/apache2/access.log`.
+
+## i) LoWeR ChEcK
+
+Etsin grep komennolla `grep -ir "nmaplowercheck1775916144" /usr/share/nmap/` mistä kyseinen teksti löytyisi, mutta en saanut osumia.
+Poistin sitten numerosarjan hakutermin perästä ja sain osuman tiedostosta `/usr/share/nmap/nselib/http.lua`.
+Avasin tiedoston sudoeditillä ja etsin kyseisen rivin.
+Poistin nimestä "nmap" ja tallensin muutokset.
+Testasin `nmap -A localhost` skannausta uudelleen ja tutkin Apachen lokeja uudelleen.
+Nyt en löytänyt viimeisimmästä skannauksesta "nmap" tekstiä.
+
+<img width="1265" height="57" alt="image" src="https://github.com/user-attachments/assets/2f62e5a3-67c6-4acf-a3e8-3642d7d25f4b" />
+
+Vielä sama grep komennolla `grep -i "nmap" /var/log/apache2/access.log`:
+
+<img width="1267" height="125" alt="image" src="https://github.com/user-attachments/assets/2badc772-e27f-4575-82cc-1581d90e28e0" />
+
+Tarkistin vielä ngrep komennolla `sudo ngrep -d lo -i nmap`, ettei nmap tekstiä löydy siepatuista verkkopaketeista.
+
+<img width="409" height="76" alt="image" src="https://github.com/user-attachments/assets/74d5d3c3-e614-415a-978e-16446bc1367d" />
+
+Ngrep ei löytänyt paketeista tekstiä "nmap".
+
+j) FCC ID
+
+Löysin FCC ID:n langattomasta näppäimistö/touchpad kombostani Logitech K400.
+
+- FCC ID: `JNZYR0019`
+- Linkki FCC sivulle: https://fcc.report/FCC-ID/JNZYR0019
+
+FCC:n sivulta löytyi kuvat puretusta laitteesta, mutta toimintakaaviot eivät olleet saatavilla.
+Confidentiality Request -dokumentista selviää, että Logitech pyysi FCC:tä salaamaan toimintakaaviot.
+Puretun laitteen kuvista löytyi kuitenkin kuva sirusta, jonka haettuani sain selville, että se on laitteen langattoman yhteyden SoC eli järjestelmäpiiri.
+Löysin piirin, tai ainakin lähestulkoon vastaavan piirin, datasheetin (DigChip.com s.a.).
+Tiedostossa on silmäilyn jälkeen paljon tietoa piirin toiminnasta ja liitännöistä, jotka varmasti auttaisivat yhteyden purkamista tai manipulointia.
 
 ## Lähdeluettelo
 
@@ -132,6 +172,8 @@ Bianco, D. 2014. The Pyramid of Pain. Luettavissa: https://detect-respond.blogsp
 Cyberfascinate 2023. NMAP Commands Cheat Sheet and Tutorial with Examples.pdf. Luettavissa: https://github.com/cyberfascinate/HaxorHandbook/blob/main/NMAP%20Commands%20Cheat%20Sheet%20and%20Tutorial%20with%20Examples.pdf. Luettu: 11.04.2026.
 
 Die.net s.a. ngrep(8) - Linux man page. Luettavissa: https://linux.die.net/man/8/ngrep. Luettu: 11.04.2026.
+
+DigChip.com s.a. Nordic VLSI nRF24LE1 datasheet. Luettavissa: https://www.digchip.com/datasheets/parts/datasheet/335/NRF24LE1-pdf.php. Luettu: 11.04.2026.
 
 Goss, A. 2014. The Diamond Model of Intrusion Analysis: Simple Intelligence-Driven Analysis. Luettavissa: https://kravensecurity.com/diamond-model-analysis/. Luettu: 10.04.2026.
 
