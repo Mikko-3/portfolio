@@ -110,6 +110,8 @@ En ole täysin varma, ymmärsinkö kaikki komennot ja niiden optiot sekä python
 
 Die.net s.a. iptables(8) - Linux man page. Luettavissa: https://linux.die.net/man/8/iptables. Luettu: 24.04.2026.
 
+Iso-Anttila, L. s.a. Larin luennot - 5. Laboratorio- ja simulaatioympäristöt hyökkäyksissä. Verkkoon tunkeutuminen ja tiedustelu -opintojakson materiaali Moodlessa. Haaga-Helia ammattikorkeakoulu. Luettu: 24.04.2026.
+
 PiMyLifeUp 2024. How to Enable or Disable IP Forwarding on Linux. Luettavissa: https://pimylifeup.com/linux-ip-forwarding/. Luettu: 24.04.2026.
 
 Sshesame 2024. sshesame. Luettavissa: https://github.com/jaksi/sshesame. Luettu: 24.04.2026.
