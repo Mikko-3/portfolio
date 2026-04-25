@@ -92,8 +92,11 @@ Nyt sain yhteyden muodostettua. H3 lokissa näkyy yhdistäminen.
 ### Analyysi
 
 Käsitykseni mukaan h3 kone on yhdistetty verkkoon h1 ja h2 koneiden kanssa, jossa on pelkkä kytkin.
-Arp_poisoning.py tiedoston koodissa kone lähettää verkkoon ARP-paketteja, joissa se kertoo oman MAC-osoitteensa olevan IP-osoitteen 10.0.0.2 eli h2 MAC-osoite.
+`Arp_poisoning.py` tiedoston koodissa kone lähettää verkkoon ARP-paketteja, joissa se kertoo oman MAC-osoitteensa olevan IP-osoitteen 10.0.0.2 eli h2 MAC-osoite.
 Täten 10.0.0.1 eli h1 lähettää paketit koneelle h3.
+
+<img width="607" height="374" alt="image" src="https://github.com/user-attachments/assets/a9722811-055d-4443-93f4-598211676fbb" />
+
 Normaalisti kone ei ottaisi vastaan paketteja, mutta `net.ipv4.ip_forward=1` asetuksella se ottaa niitä vastaan.
 Yllä ajetulla `iptables` komennolla h3 muuttaa asetuksiaan ottamaan vastaan TCP-paketteja portista 22 ja ohjaa ne itseensä.
 Kun h1 yhdistää h2 koneeseen, yhdistetäänkin oikeasti h3 koneeseen, jonka SSH huomaa avainten ollessa väärät.
@@ -128,8 +131,118 @@ H2 vastaanotti kuitenkin vain neljä pakettia.
 <img width="563" height="159" alt="image" src="https://github.com/user-attachments/assets/7ace2867-fe2f-4bea-8c86-97a1d75d715f" />
 
 Luin skriptin `spoof_icmp.py` koodia ja tajusin, että se kuuntelee pingauksia ja lähettää oikean kohteen IP-osoitteella vastauksen.
+
+```
+from scapy.all import *
+
+def spoof_icmp(pkt):
+    if pkt.haslayer(ICMP) and pkt[ICMP].type == 8:  # ICMP Echo Request
+        ip = IP(src=pkt[IP].dst, dst=pkt[IP].src)
+        icmp = ICMP(type=0)  # Echo Reply
+        reply = ip / icmp / pkt[Raw].load
+        send(reply)
+
+sniff(filter="icmp", prn=spoof_icmp)
+```
+
 Päätin kokeilla vielä samaa kolmannella koneella, h3. Jos h1 kuuntelee pingauksia, kun h2 pingaa h3, h1 voisi luultavasti lähettää vastauksia h3 sijaan.
-Kokeiltuani ja epäonnistuttuani muistin, ettei h1 voi vastaanottaa muille osoitettuja pingejä, sillö pingit lähetetään unicastina, eli vain kohdeosoitteeseen.
+Kokeiltuani ja epäonnistuttuani muistin, ettei h1 voi vastaanottaa muille osoitettuja pingejä, sillä pingit lähetetään unicastina, eli vain kohdeosoitteeseen.
+
+### Analyysi ICMP Spoofing
+
+Skripti `spoof_icmp.py` siis kuuntelee ICMP echo request viestejä, joihin se generoi vastauksen ja lähettää sen.
+Tällä hetkellä skripti ottaa vastaukseen lähettäjäksi echo request viestistä vastaanottajan IP-osoitteen, ja vastaanottajaksi echo request viestin lähettäjän.
+Pingatessa h2 koneella h1 konetta, ICMP echo reply vastaa todellisuutta, mutta jos kohteena olisi toinen kone, esim. h3 ja tämä yhdistettäisiin ARP-myrkytykseen,
+voisi h3 koneelle tarkoitetut pingit ohjautua h1 koneelle, ja se voisi vastata pingiin esittäen h3 konetta.
+
+### TCP Session Hijacking toteutus
+
+Avasin README.md tiedoston mukaisesti terminaalit h1, 2 ja 3 koneille.
+Ajoin skriptin `python3 ./tcp_server.py` koneella h1.
+Tämän jälkeen ajoin h2 koneella skriptin `python3 ./tcp_client.py`.
+Skripti muodosti yhteyden h1 koneen TCP-palvelimeen ja lähetti viestin, sekä vastaanotti viestin palvelimelta.
+
+<img width="678" height="192" alt="image" src="https://github.com/user-attachments/assets/839d97cf-87db-46b0-82ae-1c282329f76a" />
+
+H3 koneen on oltava man-in-the-middle, jotta se voi kaapata paketteja, joten ajoin a-kohdan komennot sen suorittamiseksi.
+Muutin SSH:n portin 22 portiksi 12345, joka on h1 TCP-palvelimen portti.
+Käynnistin uudessa terminaalissa `arp_poison.py` skriptin.
+Lopuksi ajoin skriptit `python3 ./sniff_tcp_session.py` ja `python3 ./tcp_hijack.py` koneella h3 ja ajoin uudelleen h2 koneella `tcp_client.py` skriptin.
+H3 näki h2 muodostaman yhteyden, mutta h2 ei saanut yhteyttä palvelimeen.
+
+<img width="325" height="64" alt="image" src="https://github.com/user-attachments/assets/b92445a9-26e3-46df-8078-07e6a5c2ac83" />
+
+<img width="687" height="101" alt="image" src="https://github.com/user-attachments/assets/4924ed64-53ea-4c99-9b82-385c808f7a15" />
+
+Kun `arp_spoofing.py` oli pois päältä ja olin poistanut h2 koneen ARP-taulusta h1 koneen osoitteen, h2 sai jälleen yhteyden h1 koneeseen, mutta h3 ei nähnyt liikennettä näiden välillä.
+
+<img width="677" height="84" alt="image" src="https://github.com/user-attachments/assets/454d1383-a855-4f69-abcb-41c6009e8b0a" />
+
+Kun ajoin `tcp_hijack.py` skriptin, h3 tietenkin näki liikenteen, mutta h1 ei näyttänyt tulosteessaan, että se olisi vastaanottanut liikennettä.
+
+<img width="1256" height="83" alt="image" src="https://github.com/user-attachments/assets/e0f4488a-03a3-4101-8cf2-08dfdf216944" />
+
+<img width="325" height="44" alt="image" src="https://github.com/user-attachments/assets/1e9349d2-f1a8-4d08-ab73-8fe27f00e08f" />
+
+Kokeilin h3 koneella vielä skriptiä `tcp_sniff_and_hijack.py`, jonka pitäisi kai haistella liikennettä ja sitten lähettää paketti, mutta sekään ei toiminut, sillä se ei havainnut liikennettä.
+
+<img width="756" height="52" alt="image" src="https://github.com/user-attachments/assets/aa65864b-89cc-426b-a02f-1692da5dde6b" />
+
+Aloin tekemään analyysia, ja siinä tutkin skriptin `tcp_hijack.py` koodia.
+Siihen piti muokata kaapattujen pakettien source port sekä SEQ ja ACK luvut.
+Kokeilin tätä vielä kaapatuilla tiedoilla, jotka muokkasin `tcp_hijack.py` tiedostoon.
+
+<img width="324" height="68" alt="image" src="https://github.com/user-attachments/assets/ac4ab9b5-b15f-4aa5-9686-04fc82609205" />
+
+<img width="539" height="234" alt="image" src="https://github.com/user-attachments/assets/ac599a76-d8a7-4eb4-8b55-8f62b55eb01f" />
+
+En saanut h1 koneella vieläkään mitään tulostetta, että liikennettä olisi vastaanotettu, kun ajoin skriptin.
+H3 näki kuitenkin vastauksen h1 koneelta TCP-snifferissä.
+
+<img width="685" height="289" alt="image" src="https://github.com/user-attachments/assets/865175b2-6ef3-4851-8cec-75fa9c435563" />
+
+<img width="326" height="114" alt="image" src="https://github.com/user-attachments/assets/767558b3-c862-4efc-a6c2-b0cc445a662e" />
+
+En tiedä teinkö jotain väärin, mutta en usko saaneeni tätä toimimaan oikein.
+
+### Analyysi TCP Session Hijacking
+
+Toimiessaan oikein, hyökkäyksen ideana olisi ymmärtääkseni kuunnella TCP-liikennettä, siepata paketti joka on matkalla palvelimelle ja lähettää sen sijaan väärennetty paketti toisen koneen nimissä.
+Näin vastaukset ohjautuisivat hyökkääjän koneelle, joka voisi lukea sisällön selkokielisenä.
+Tutkin skriptin `tcp_hijack.py` koodia, ja siihen pitäisi muokata kaapattujen pakettien source port sekä SEQ ja ACK luvut.
+En kuitenkaan saanut ilman ARP-myrkytystä mitään kaapattua ja ARP-myrkytyksen ollessa käynnissä, h1 ei tunnu vastaanottavan liikennettä.
+
+`tcp_hijack.py` alkuperäinen koodi:
+
+```
+from scapy.all import IP, TCP, send
+
+# Define the sniffed details (modify these based on your captured data)
+source_ip = "10.0.0.2" 
+destination_ip = "10.0.0.1" 
+source_port = 52632  
+destination_port = 12345
+
+# Use the captured sequence and acknowledgment numbers
+seq_num = 2288396862
+ack_num = 1186024865  
+
+# Payload to be injected
+payload = "you are hacked!"
+
+ip_layer = IP(src=source_ip, dst=destination_ip)
+tcp_layer = TCP(sport=source_port, dport=destination_port, seq=seq_num, ack=ack_num, flags="PA")  
+
+spoofed_packet = ip_layer / tcp_layer / payload
+
+
+print(f"[*] Sending spoofed packet: {source_ip}:{source_port} -> {destination_ip}:{destination_port}")
+send(spoofed_packet)
+```
+
+## c) Hakemistossa 02-SDN-DDos_Simulation tryout-kansiossa on työkalut, jotta voit ajaa TCP SYN-Flood-hyökkäyksen turvallisesti. Kirjoita, miten ajoit hyökkäyksen ja miten kyseinen hyökkäys toimii.
+
+
 
 ## Lähdeluettelo
 
