@@ -105,6 +105,31 @@ En ole täysin varma, ymmärsinkö kaikki komennot ja niiden optiot sekä python
 
 ## b) Samassa hakemistossa on myös ICMP Spoofing ja TCP Session Hijacking. Aja molemmat labrat läpi ja kerro, miten molemmat tekniikat toimivat.
 
+### ICMP Spoofing toteutus
+
+Käynnistin mininet ympäristön samoilla komennoilla kuin aikaisemmin.
+Avasin xterminaalit koneille h1 ja h2.
+Siirryin molemmilla koneilla hakemistoon `/home/mininet/lab/01-Network-Security-Lab/scripts`.
+Pingasin koneella h1 konetta h2 varmistaakseni verkon toiminnan, pingaus onnistui.
+Käynnistin koneella h1 skriptin `python3 ./sniff_icmp.py` kaapatakseni ICMP-paketteja.
+Sen jälkeen pingasin h1 konetta h2 koneella.
+H1 näytti tulosteessa kaapatut ICMP-paketit, sekä kyselyt ja vastaukset.
+
+<img width="676" height="339" alt="image" src="https://github.com/user-attachments/assets/83ef9e2b-f37f-412c-84ff-da9aa5249a00" />
+
+Lopetin skriptin suorittamisen Ctrl+C näppäinyhdistelmällä ja käynnistin toisen skirptin h1 koneella, `python3 ./spoof_icmp.py`. Tämän skriptin tarkoitus on väärentää ICMP-vastauksia.
+Pingasin h1 konetta, mutta h1 koneen tuloste ei antanut erityisemmin tietoa, siinä luki vain "sent 1 packets".
+Avasin toisen terminaalin h1 koneelle, ajaakseni `sniff_icmp.py` skriptiä samaan aikaan.
+Pingasin taas h1 konetta h2 koneella, ja nyt huomasin, että h1 lähetti kaksi vastausta jokaista kyselyä kohden.
+H2 vastaanotti kuitenkin vain neljä pakettia.
+
+<img width="696" height="208" alt="image" src="https://github.com/user-attachments/assets/ed3102ad-d0c8-4a95-97b2-c9c8b17751c6" />
+
+<img width="563" height="159" alt="image" src="https://github.com/user-attachments/assets/7ace2867-fe2f-4bea-8c86-97a1d75d715f" />
+
+Luin skriptin `spoof_icmp.py` koodia ja tajusin, että se kuuntelee pingauksia ja lähettää oikean kohteen IP-osoitteella vastauksen.
+Päätin kokeilla vielä samaa kolmannella koneella, h3. Jos h1 kuuntelee pingauksia, kun h2 pingaa h3, h1 voisi luultavasti lähettää vastauksia h3 sijaan.
+Kokeiltuani ja epäonnistuttuani muistin, ettei h1 voi vastaanottaa muille osoitettuja pingejä, sillö pingit lähetetään unicastina, eli vain kohdeosoitteeseen.
 
 ## Lähdeluettelo
 
